@@ -152,15 +152,15 @@
 <!-- Controls Card -->
 <div class="bg-surface rounded-lg border border-border p-card-padding shadow-[0_2px_4px_rgba(0,0,0,0.04)] flex flex-wrap items-center justify-between gap-4">
 <div class="flex items-center gap-2 bg-surface-container-low p-1 rounded-DEFAULT border border-border">
-<button class="px-4 py-1.5 rounded-DEFAULT bg-surface text-primary shadow-sm font-label-caps text-label-caps">USD</button>
-<button class="px-4 py-1.5 rounded-DEFAULT text-on-surface-variant hover:text-primary font-label-caps text-label-caps">CNY</button>
+<button class="px-4 py-1.5 rounded-DEFAULT bg-surface text-primary shadow-sm font-label-caps text-label-caps" data-currency="USD" type="button">USD</button>
+<button class="px-4 py-1.5 rounded-DEFAULT text-on-surface-variant hover:text-primary font-label-caps text-label-caps" data-currency="CNY" type="button">CNY</button>
 </div>
 <div class="flex items-center gap-3">
-<button class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-1 transition-colors">
+<button class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-1 transition-colors" id="load-example" type="button">
 <span class="material-symbols-outlined text-[18px]">download</span>
                             载入示例
                         </button>
-<button class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-1 transition-colors">
+<button class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-1 transition-colors" id="reset-calculator" type="button">
 <span class="material-symbols-outlined text-[18px]">refresh</span>
                             重置
                         </button>
@@ -178,8 +178,8 @@
 <label class="block font-body-sm text-body-sm text-on-surface-variant">销售单价</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
 <span class="pl-3 text-outline material-symbols-outlined">attach_money</span>
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="39.99"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" id="sellingPrice" min="0" step="0.01" type="number" value="39.99"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 <!-- Purchase Price -->
@@ -187,8 +187,8 @@
 <label class="block font-body-sm text-body-sm text-on-surface-variant">采购单价</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
 <span class="pl-3 text-outline material-symbols-outlined">shopping_cart</span>
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="8.50"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" id="purchasePrice" min="0" step="0.01" type="number" value="8.50"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 <!-- Sales Volume -->
@@ -196,7 +196,7 @@
 <label class="block font-body-sm text-body-sm text-on-surface-variant">预计销量</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
 <span class="pl-3 text-outline material-symbols-outlined">tag</span>
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="500"/>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" id="volume" min="0" step="1" type="number" value="500"/>
 <span class="pr-3 text-outline font-label-caps text-label-caps">件</span>
 </div>
 </div>
@@ -205,8 +205,8 @@
 <label class="block font-body-sm text-body-sm text-on-surface-variant">国际单件运费</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
 <span class="pl-3 text-outline material-symbols-outlined">flight_takeoff</span>
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="12.00"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" id="internationalShipping" min="0" step="0.01" type="number" value="12.00"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 <!-- Platform Comm -->
@@ -214,7 +214,7 @@
 <label class="block font-body-sm text-body-sm text-on-surface-variant">平台佣金比例</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
 <span class="pl-3 text-outline material-symbols-outlined">storefront</span>
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="15"/>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" id="commissionRate" min="0" max="100" step="0.1" type="number" value="15"/>
 <span class="pr-3 text-outline font-label-caps text-label-caps">%</span>
 </div>
 </div>
@@ -223,47 +223,47 @@
 <label class="block font-body-sm text-body-sm text-on-surface-variant">单件营销成本 (广告)</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
 <span class="pl-3 text-outline material-symbols-outlined">campaign</span>
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="4.00"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" id="marketing" min="0" step="0.01" type="number" value="4.00"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 </div>
 </div>
 <!-- Advanced Costs Card (Accordion Style) -->
 <div class="bg-surface rounded-lg border border-border p-card-padding shadow-[0_2px_4px_rgba(0,0,0,0.04)]">
-<button class="w-full flex items-center justify-between group">
+<button aria-expanded="true" class="w-full flex items-center justify-between group" id="advanced-toggle" type="button">
 <h2 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
 <span class="material-symbols-outlined text-on-surface-variant">tune</span>
                             高级/隐性成本
                         </h2>
-<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">expand_more</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-chevron>expand_less</span>
 </button>
-<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border border-dashed">
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border border-dashed" id="advanced-costs">
 <div class="space-y-2">
 <label class="block font-body-sm text-body-sm text-on-surface-variant">包装/耗材单件成本</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="0.80"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" id="packaging" min="0" step="0.01" type="number" value="0.80"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 <div class="space-y-2">
 <label class="block font-body-sm text-body-sm text-on-surface-variant">国内单件运费 (至港口)</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="0.50"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" id="domesticShipping" min="0" step="0.01" type="number" value="0.50"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 <div class="space-y-2">
 <label class="block font-body-sm text-body-sm text-on-surface-variant">关税及清关单件成本</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="1.20"/>
-<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" id="customs" min="0" step="0.01" type="number" value="1.20"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps" data-currency-label>USD</span>
 </div>
 </div>
 <div class="space-y-2">
 <label class="block font-body-sm text-body-sm text-on-surface-variant">退款/损坏预估率</label>
 <div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
-<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="3"/>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" id="refundRate" min="0" max="100" step="0.1" type="number" value="3"/>
 <span class="pr-3 text-outline font-label-caps text-label-caps">%</span>
 </div>
 </div>
@@ -278,43 +278,43 @@
 <div class="p-card-padding bg-surface-bright border-b border-border">
 <p class="font-body-sm text-body-sm text-on-surface-variant mb-1">单件净利润 (Unit Net Profit)</p>
 <div class="flex items-baseline gap-2">
-<span class="font-display-lg text-display-lg text-success">$5.79</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded-sm">14.5% 利润率</span>
+<span class="font-display-lg text-display-lg text-success" id="unit-profit">$5.79</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded-sm" id="profit-margin">14.5% 利润率</span>
 </div>
 </div>
 <div class="p-card-padding space-y-4">
 <div class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
 <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-primary-container"></span> 预期总收入 (500件)
+<span class="w-2 h-2 rounded-full bg-primary-container"></span> <span id="revenue-label">预期总收入 (500件)</span>
                                 </span>
-<span class="font-body-md text-body-md font-medium text-primary">$19,995.00</span>
+<span class="font-body-md text-body-md font-medium text-primary" id="total-revenue">$19,995.00</span>
 </div>
 <div class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
 <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
 <span class="w-2 h-2 rounded-full bg-error"></span> 预期总成本
                                 </span>
-<span class="font-body-md text-body-md font-medium text-primary">$17,100.00</span>
+<span class="font-body-md text-body-md font-medium text-primary" id="total-cost">$17,100.00</span>
 </div>
 <div class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
 <span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
 <span class="w-2 h-2 rounded-full bg-success"></span> 预期总净利
                                 </span>
-<span class="font-body-md text-body-md font-bold text-success">$2,895.00</span>
+<span class="font-body-md text-body-md font-bold text-success" id="total-profit">$2,895.00</span>
 </div>
 </div>
 </div>
 <!-- Warning Card (Orange) -->
-<div class="bg-warning/10 border border-warning/30 rounded-lg p-4 flex gap-3 items-start">
+<div class="bg-warning/10 border border-warning/30 rounded-lg p-4 flex gap-3 items-start" id="shipping-warning">
 <span class="material-symbols-outlined text-warning mt-0.5">warning</span>
 <div>
 <h4 class="font-body-sm text-body-sm font-semibold text-warning mb-1">物流成本偏高警告</h4>
-<p class="font-body-sm text-body-sm text-warning/80">国际运费占售价超过 30% (当前为30.0%)，建议考虑组合装销售、提高客单价，或采用海运等批量运输方式降低均摊成本。</p>
+<p class="font-body-sm text-body-sm text-warning/80" id="shipping-warning-text">国际运费占售价超过 30% (当前为30.0%)，建议考虑组合装销售、提高客单价，或采用海运等批量运输方式降低均摊成本。</p>
 </div>
 </div>
 <!-- Actions -->
 <div class="flex flex-col gap-3">
-<button class="w-full bg-secondary text-on-secondary font-button text-button py-3 rounded-DEFAULT hover:bg-secondary/90 transition-colors shadow-sm">保存计算记录</button>
-<button class="w-full border border-primary-container text-primary-container bg-surface font-button text-button py-3 rounded-DEFAULT hover:bg-surface-container-low transition-colors" onclick="location.href='plan.html'">用于出口方案</button>
+<button class="w-full bg-secondary text-on-secondary font-button text-button py-3 rounded-DEFAULT hover:bg-secondary/90 transition-colors shadow-sm" id="save-calculation" type="button">保存计算记录</button>
+<button class="w-full border border-primary-container text-primary-container bg-surface font-button text-button py-3 rounded-DEFAULT hover:bg-surface-container-low transition-colors" id="use-in-plan" type="button">用于出口方案</button>
 </div>
 </div>
 </div>
@@ -338,4 +338,6 @@
 </div>
 </div>
 </footer>
+<script src="assets/common.js"></script>
+<script src="assets/calculator.js"></script>
 </body></html>
