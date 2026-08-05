@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>外贸路线图 - TradeStart</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary": "#ffffff",
+                        "tertiary": "#001529",
+                        "on-primary-container": "#7a92b0",
+                        "primary-fixed": "#d1e4ff",
+                        "surface-container": "#eceef1",
+                        "tertiary-fixed": "#d0e4ff",
+                        "on-primary-fixed": "#011d35",
+                        "on-tertiary-fixed-variant": "#324861",
+                        "secondary-fixed": "#7cf6eb",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#021d33",
+                        "success": "#27AB83",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff1f4",
+                        "border": "#D9E2EC",
+                        "on-primary-fixed-variant": "#314863",
+                        "on-secondary-fixed": "#00201d",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#79f3e8",
+                        "surface-dim": "#d8dadd",
+                        "surface": "#FFFFFF",
+                        "surface-container-low": "#f2f4f7",
+                        "secondary-fixed-dim": "#5dd9ce",
+                        "inverse-surface": "#2d3133",
+                        "secondary": "#006a63",
+                        "on-background": "#191c1e",
+                        "warning": "#F59E0B",
+                        "on-surface-variant": "#43474d",
+                        "on-surface": "#191c1e",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#00504b",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#b0c9e8",
+                        "on-secondary-container": "#006f68",
+                        "on-error": "#ffffff",
+                        "primary": "#00152a",
+                        "surface-container-highest": "#e0e3e6",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#b0c9e8",
+                        "surface-bright": "#f7f9fc",
+                        "outline": "#74777e",
+                        "tertiary-container": "#122a41",
+                        "danger": "#EF4444",
+                        "surface-tint": "#49607c",
+                        "surface-container-high": "#e6e8eb",
+                        "outline-variant": "#c3c6ce",
+                        "primary-container": "#102a43",
+                        "tertiary-fixed-dim": "#b1c9e6",
+                        "on-tertiary-container": "#7b92ad",
+                        "background": "#f7f9fc",
+                        "surface-variant": "#e0e3e6"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "card-padding": "24px",
+                        "section-gap": "80px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Hanken Grotesk", "sans-serif"],
+                        "button": ["Noto Sans SC", "sans-serif"],
+                        "label-caps": ["JetBrains Mono", "monospace"],
+                        "body-md": ["Noto Sans SC", "sans-serif"],
+                        "body-lg": ["Noto Sans SC", "sans-serif"],
+                        "body-sm": ["Noto Sans SC", "sans-serif"],
+                        "headline-sm": ["Hanken Grotesk", "sans-serif"],
+                        "display-lg-mobile": ["Hanken Grotesk", "sans-serif"],
+                        "headline-md": ["Hanken Grotesk", "sans-serif"]
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "button": ["16px", { lineHeight: "1", fontWeight: "600" }],
+                        "label-caps": ["12px", { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "body-sm": ["14px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "headline-sm": ["20px", { lineHeight: "1.4", fontWeight: "600" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "1.2", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "1.4", fontWeight: "600" }]
+                    },
+                    boxShadow: {
+                        'level-1': '0 2px 4px rgba(0,0,0,0.04)',
+                        'level-2': '0 8px 16px rgba(0,0,0,0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar-fill {
+            transition: width 1s ease-in-out;
+        }
+
+        /* Node Connector Lines */
+        .node-connector {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: #D9E2EC;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .node-connector {
+                top: 50%;
+                left: 24px;
+                width: 2px;
+                height: 100%;
+                z-index: 0;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f9fc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c3c6ce;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7a92b0;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 w-full z-50 border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-20">
+<!-- Brand -->
+<a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" href="index.html">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">rocket_launch</span>
+                TradeStart <span class="text-on-surface-variant font-normal text-body-lg">| 外贸起步</span>
+</a>
+<!-- Desktop Navigation -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md hover:bg-surface-container-low transition-all duration-200 px-3 py-2 rounded-md" href="index.html">首页</a>
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body-md text-body-md px-3 py-2" href="roadmap.html">外贸路线图</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md hover:bg-surface-container-low transition-all duration-200 px-3 py-2 rounded-md" href="calculator.html">利润计算器</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md hover:bg-surface-container-low transition-all duration-200 px-3 py-2 rounded-md" href="plan.html">出口方案</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden md:flex bg-primary-container text-on-primary font-button text-button px-6 py-3 rounded-lg hover:bg-tertiary-container transition-colors active:scale-95 transition-transform shadow-level-1">
+                    开始学习
+                </button>
+<button class="md:hidden text-on-surface p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+<!-- Hero Section -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+<div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-4">一件商品如何卖到海外</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">系统化学习出口全流程，从零开始建立你的外贸业务逻辑。</p>
+</div>
+<!-- Progress Indicator -->
+<div class="bg-surface p-4 rounded-lg border border-border shadow-level-1 min-w-[240px]">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">总体进度 12.5%</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium">已完成 1/8 个节点</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full progress-bar-fill" style="width: 12.5%;"></div>
+</div>
+</div>
+</div>
+<!-- Roadmap Visual (Horizontal on Desktop, Vertical on Mobile) -->
+<div class="relative bg-surface rounded-xl border border-border shadow-level-1 p-6 md:p-8 overflow-x-auto">
+<div class="flex flex-col md:flex-row md:justify-between min-w-[1000px] md:min-w-0 relative z-10 gap-8 md:gap-0">
+<!-- Connector Line (Desktop) -->
+<div class="hidden md:block absolute top-[28px] left-[50px] right-[50px] h-0.5 bg-border z-[-1]"></div>
+<!-- Connector Line (Mobile) -->
+<div class="md:hidden absolute top-[50px] bottom-[50px] left-[28px] w-0.5 bg-border z-[-1]"></div>
+<!-- Node 1: Completed -->
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer">
+<div class="w-14 h-14 rounded-full bg-primary-fixed border-2 border-primary text-primary flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0">
+<span class="material-symbols-outlined">check</span>
+</div>
+<div class="ml-4 md:ml-0 flex-grow">
+<div class="font-label-caps text-label-caps text-primary-container mb-1">节点 1</div>
+<h3 class="font-body-sm text-body-sm font-bold text-primary mb-1">选择业务模式</h3>
+<div class="flex items-center md:justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span class="font-body-sm text-[12px]">已完成</span>
+</div>
+</div>
+</div>
+<!-- Node 2: In Progress (Selected) -->
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-secondary text-secondary flex items-center justify-center mb-0 md:mb-3 z-10 shadow-level-2 ring-4 ring-secondary-container/30 shrink-0">
+<span class="font-headline-sm text-headline-sm">2</span>
+</div>
+<div class="ml-4 md:ml-0 flex-grow">
+<div class="font-label-caps text-label-caps text-secondary mb-1">节点 2</div>
+<h3 class="font-body-sm text-body-sm font-bold text-primary mb-1">选择商品与供应商</h3>
+<div class="flex items-center md:justify-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-[14px]">timelapse</span>
+<span class="font-body-sm text-[12px]">学习中 (15分钟)</span>
+</div>
+</div>
+</div>
+<!-- Node 3: Not Started -->
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-border text-on-surface-variant flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0 group-hover:border-primary-container transition-colors">
+<span class="font-headline-sm text-headline-sm">3</span>
+</div>
+<div class="ml-4 md:ml-0 flex-grow">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">节点 3</div>
+<h3 class="font-body-sm text-body-sm font-medium text-on-surface mb-1">研究目标市场</h3>
+<div class="flex items-center md:justify-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span class="font-body-sm text-[12px]">未开始</span>
+</div>
+</div>
+</div>
+<!-- Nodes 4-8 (Simplified for brevity, following Node 3 style) -->
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-border text-on-surface-variant flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0">
+<span class="font-headline-sm text-headline-sm">4</span>
+</div>
+<div class="ml-4 md:ml-0">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">节点 4</div>
+<h3 class="font-body-sm text-body-sm font-medium text-on-surface mb-1">选择获客渠道</h3>
+</div>
+</div>
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-border text-on-surface-variant flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0">
+<span class="font-headline-sm text-headline-sm">5</span>
+</div>
+<div class="ml-4 md:ml-0">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">节点 5</div>
+<h3 class="font-body-sm text-body-sm font-medium text-on-surface mb-1">核算价格利润</h3>
+</div>
+</div>
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-border text-on-surface-variant flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0">
+<span class="font-headline-sm text-headline-sm">6</span>
+</div>
+<div class="ml-4 md:ml-0">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">节点 6</div>
+<h3 class="font-body-sm text-body-sm font-medium text-on-surface mb-1">收款物流报关</h3>
+</div>
+</div>
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-border text-on-surface-variant flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0">
+<span class="font-headline-sm text-headline-sm">7</span>
+</div>
+<div class="ml-4 md:ml-0">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">节点 7</div>
+<h3 class="font-body-sm text-body-sm font-medium text-on-surface mb-1">订单履约</h3>
+</div>
+</div>
+<div class="flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 rounded-full bg-surface border-2 border-border text-on-surface-variant flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0">
+<span class="font-headline-sm text-headline-sm">8</span>
+</div>
+<div class="ml-4 md:ml-0">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">节点 8</div>
+<h3 class="font-body-sm text-body-sm font-medium text-on-surface mb-1">售后复盘</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content Panel -->
+<section class="bg-surface rounded-xl border border-border shadow-level-1 overflow-hidden flex flex-col md:flex-row">
+<!-- Main Content Area -->
+<div class="w-full md:w-3/4 p-6 md:p-8 border-b md:border-b-0 md:border-r border-border">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined" data-weight="fill">inventory_2</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary">选择商品与供应商</h2>
+</div>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<!-- Goal -->
+<div class="col-span-1 md:col-span-2 bg-surface-bright rounded-lg p-5 border border-border">
+<h3 class="font-body-md text-body-md font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">flag</span>
+                            本节点目标
+                        </h3>
+<p class="text-on-surface-variant text-body-sm">确定核心类目，筛选高潜力商品，建立初步供应商清单。</p>
+</div>
+<!-- 5 Min Knowledge -->
+<div class="bg-surface-bright rounded-lg p-5 border border-border">
+<h3 class="font-body-md text-body-md font-bold text-primary mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-warning text-[20px]">lightbulb</span>
+                            5分钟核心知识
+                        </h3>
+<ul class="space-y-3 text-body-sm text-on-surface-variant">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">check_circle</span>
+<div><strong>选品逻辑：</strong>利润空间、体积重量比（影响运费）、合规性（认证要求）。</div>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">check_circle</span>
+<div><strong>供应商类型：</strong>OEM/ODM、源头工厂、贸易商。</div>
+</li>
+</ul>
+</div>
+<!-- Key Terms -->
+<div class="bg-surface-bright rounded-lg p-5 border border-border">
+<h3 class="font-body-md text-body-md font-bold text-primary mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container text-[20px]">menu_book</span>
+                            关键术语
+                        </h3>
+<div class="grid grid-cols-1 gap-2">
+<div class="bg-surface p-2 rounded border border-border flex justify-between items-center">
+<span class="font-label-caps text-primary font-bold">MOQ</span>
+<span class="text-body-sm text-on-surface-variant">最小起订量</span>
+</div>
+<div class="bg-surface p-2 rounded border border-border flex justify-between items-center">
+<span class="font-label-caps text-primary font-bold">OEM</span>
+<span class="text-body-sm text-on-surface-variant">代工生产</span>
+</div>
+<div class="bg-surface p-2 rounded border border-border flex justify-between items-center">
+<span class="font-label-caps text-primary font-bold">ODM</span>
+<span class="text-body-sm text-on-surface-variant">贴牌生产</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Steps (Vertical Line) -->
+<div class="mb-8">
+<h3 class="font-body-md text-body-md font-bold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">format_list_numbered</span>
+                        操作步骤
+                    </h3>
+<div class="relative pl-6 space-y-6">
+<div class="absolute left-2.5 top-2 bottom-2 w-0.5 bg-border"></div>
+<div class="relative">
+<div class="absolute -left-[27px] w-5 h-5 rounded-full bg-surface border-2 border-secondary flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+<h4 class="font-body-sm font-bold text-primary">1. 确定品类</h4>
+<p class="text-body-sm text-on-surface-variant">基于自身资源或兴趣，划定2-3个初步品类。</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[27px] w-5 h-5 rounded-full bg-surface border-2 border-border flex items-center justify-center"></div>
+<h4 class="font-body-sm font-bold text-primary">2. 平台调研</h4>
+<p class="text-body-sm text-on-surface-variant">在Alibaba、1688等平台筛选金牌供应商。</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[27px] w-5 h-5 rounded-full bg-surface border-2 border-border flex items-center justify-center"></div>
+<h4 class="font-body-sm font-bold text-primary">3. 样板采购与成本初算</h4>
+<p class="text-body-sm text-on-surface-variant">沟通获取阶梯报价，采购样品评估质量。</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar / Action Area -->
+<div class="w-full md:w-1/4 bg-surface-container-lowest p-6 md:p-8 flex flex-col justify-between">
+<div>
+<!-- Practice Task -->
+<div class="mb-6 p-4 rounded-lg bg-primary-fixed border border-primary-fixed-dim">
+<h3 class="font-body-md text-body-md font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">assignment</span>
+                            实践任务
+                        </h3>
+<p class="text-body-sm text-on-primary-fixed-variant mb-3">在选定的品类中寻找 3 家符合条件的供应商，并记录他们的 MOQ 和单价。</p>
+<button class="w-full py-2 bg-surface text-primary border border-border rounded font-button text-button text-sm hover:bg-surface-container-low transition-colors shadow-sm">
+                            填写记录
+                        </button>
+</div>
+<!-- Quiz Teaser -->
+<div class="mb-6">
+<h3 class="font-body-md text-body-md font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">quiz</span>
+                            小测验 (0/3)
+                        </h3>
+<p class="text-body-sm text-on-surface-variant mb-3">完成测验以解锁下一节点。</p>
+<button class="w-full py-2 bg-surface text-secondary border border-secondary rounded font-button text-button text-sm hover:bg-secondary/5 transition-colors">
+                            开始测验
+                        </button>
+</div>
+</div>
+<!-- Footer Navigation inside panel -->
+<div class="mt-8 pt-6 border-t border-border flex flex-col gap-3">
+<button class="w-full py-3 bg-success text-on-primary rounded-lg font-button text-button hover:bg-success/90 transition-colors shadow-level-1 flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                        标记完成
+                    </button>
+<div class="grid grid-cols-2 gap-3 mt-2">
+<button class="py-2 bg-surface text-on-surface-variant border border-border rounded-lg font-button text-button text-sm hover:bg-surface-container-low transition-colors">
+                            上一个节点
+                        </button>
+<button class="py-2 bg-primary-container text-on-primary rounded-lg font-button text-button text-sm hover:bg-tertiary-container transition-colors shadow-sm">
+                            下一个节点
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container w-full flat no shadows">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-section-gap max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-2">
+<div class="font-headline-sm text-headline-sm text-on-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" data-weight="fill">rocket_launch</span>
+                    TradeStart
+                </div>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim/80 max-w-sm mb-4">
+                    本平台仅用于学习与模拟，不提供真实交易、报关、税务或物流服务。
+                </p>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim/50">
+                    © 2024 TradeStart. All rights reserved.
+                </p>
+</div>
+<div class="col-span-1">
+<h4 class="font-body-md text-body-md text-on-primary mb-4 font-bold">资源</h4>
+<ul class="space-y-2">
+<li><a class="font-body-sm text-body-sm text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">关于我们</a></li>
+<li><a class="font-body-sm text-body-sm text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="https://github.com/Joyce420/tradestart">GitHub</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-body-md text-body-md text-on-primary mb-4 font-bold">法律与声明</h4>
+<ul class="space-y-2">
+<li><a class="font-body-sm text-body-sm text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">风险免责</a></li>
+<li><a class="font-body-sm text-body-sm text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">隐私政策</a></li>
+<li><a class="font-body-sm text-body-sm text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">模拟计算声明</a></li>
+</ul>
+</div>
+</div>
+</footer>
+</body></html>

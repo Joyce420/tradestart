@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>出口利润计算器 - TradeStart</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&amp;family=Noto+Sans+SC:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#b0c9e8",
+                    "outline-variant": "#c3c6ce",
+                    "background": "#f7f9fc",
+                    "on-primary-fixed-variant": "#314863",
+                    "on-primary-fixed": "#011d35",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#7a92b0",
+                    "success": "#27AB83",
+                    "warning": "#F59E0B",
+                    "on-surface-variant": "#43474d",
+                    "secondary-fixed": "#7cf6eb",
+                    "primary-fixed-dim": "#b0c9e8",
+                    "tertiary-fixed": "#d0e4ff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#7b92ad",
+                    "tertiary": "#001529",
+                    "on-tertiary-fixed-variant": "#324861",
+                    "on-error": "#ffffff",
+                    "on-secondary-container": "#006f68",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#021d33",
+                    "surface-container-low": "#f2f4f7",
+                    "surface-tint": "#49607c",
+                    "on-secondary-fixed-variant": "#00504b",
+                    "tertiary-container": "#122a41",
+                    "secondary": "#006a63",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#d8dadd",
+                    "surface-variant": "#e0e3e6",
+                    "on-secondary-fixed": "#00201d",
+                    "danger": "#EF4444",
+                    "primary": "#00152a",
+                    "surface-container-high": "#e6e8eb",
+                    "tertiary-fixed-dim": "#b1c9e6",
+                    "on-surface": "#191c1e",
+                    "surface-container": "#eceef1",
+                    "primary-fixed": "#d1e4ff",
+                    "inverse-on-surface": "#eff1f4",
+                    "primary-container": "#102a43",
+                    "outline": "#74777e",
+                    "secondary-container": "#79f3e8",
+                    "on-background": "#191c1e",
+                    "surface": "#FFFFFF",
+                    "surface-bright": "#f7f9fc",
+                    "on-primary": "#ffffff",
+                    "border": "#D9E2EC",
+                    "inverse-surface": "#2d3133",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed-dim": "#5dd9ce",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e0e3e6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "card-padding": "24px",
+                    "section-gap": "80px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "gutter": "24px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Hanken Grotesk"],
+                    "headline-sm": ["Hanken Grotesk"],
+                    "body-sm": ["Noto Sans SC"],
+                    "headline-md": ["Hanken Grotesk"],
+                    "button": ["Noto Sans SC"],
+                    "body-lg": ["Noto Sans SC"],
+                    "label-caps": ["JetBrains Mono"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-md": ["Noto Sans SC"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "button": ["16px", {"lineHeight": "1", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #D9E2EC; border-radius: 20px; }
+
+        .input-focus-ring:focus-within {
+            border-color: #006a63;
+            box-shadow: 0 0 0 2px rgba(0, 106, 99, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-20">
+<!-- Brand -->
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md font-bold text-primary">TradeStart (外贸起步)</span>
+</div>
+<!-- Navigation Links -->
+<ul class="hidden md:flex items-center gap-8">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-3 py-2 rounded-DEFAULT transition-all duration-200" href="index.html">首页</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-3 py-2 rounded-DEFAULT transition-all duration-200" href="roadmap.html">外贸路线图</a></li>
+<li><a class="font-body-md text-body-md text-secondary font-bold border-b-2 border-secondary pb-1 hover:bg-surface-container-low px-3 transition-all duration-200" href="calculator.html">利润计算器</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-3 py-2 rounded-DEFAULT transition-all duration-200" href="plan.html">出口方案</a></li>
+</ul>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="bg-secondary text-on-secondary font-button text-button px-4 py-2 rounded-DEFAULT hover:bg-secondary/90 transition-colors active:scale-95 transition-transform">开始学习</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full py-8 md:py-12">
+<!-- Header -->
+<header class="mb-10 text-center md:text-left">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">出口利润计算器</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">把采购、物流、平台、营销和售后成本一起算清楚</p>
+</header>
+<!-- Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Inputs (60%) -->
+<div class="lg:col-span-7 space-y-6">
+<!-- Controls Card -->
+<div class="bg-surface rounded-lg border border-border p-card-padding shadow-[0_2px_4px_rgba(0,0,0,0.04)] flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2 bg-surface-container-low p-1 rounded-DEFAULT border border-border">
+<button class="px-4 py-1.5 rounded-DEFAULT bg-surface text-primary shadow-sm font-label-caps text-label-caps">USD</button>
+<button class="px-4 py-1.5 rounded-DEFAULT text-on-surface-variant hover:text-primary font-label-caps text-label-caps">CNY</button>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            载入示例
+                        </button>
+<button class="text-on-surface-variant hover:text-primary font-button text-button flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+                            重置
+                        </button>
+</div>
+</div>
+<!-- Basic Inputs Card -->
+<div class="bg-surface rounded-lg border border-border p-card-padding shadow-[0_2px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">inventory_2</span>
+                        基础数据
+                    </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Selling Price -->
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">销售单价</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<span class="pl-3 text-outline material-symbols-outlined">attach_money</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="39.99"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+<!-- Purchase Price -->
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">采购单价</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<span class="pl-3 text-outline material-symbols-outlined">shopping_cart</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="8.50"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+<!-- Sales Volume -->
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">预计销量</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<span class="pl-3 text-outline material-symbols-outlined">tag</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="500"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">件</span>
+</div>
+</div>
+<!-- Int Shipping -->
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">国际单件运费</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<span class="pl-3 text-outline material-symbols-outlined">flight_takeoff</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="12.00"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+<!-- Platform Comm -->
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">平台佣金比例</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<span class="pl-3 text-outline material-symbols-outlined">storefront</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="15"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">%</span>
+</div>
+</div>
+<!-- Ads -->
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">单件营销成本 (广告)</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<span class="pl-3 text-outline material-symbols-outlined">campaign</span>
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2" type="number" value="4.00"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Advanced Costs Card (Accordion Style) -->
+<div class="bg-surface rounded-lg border border-border p-card-padding shadow-[0_2px_4px_rgba(0,0,0,0.04)]">
+<button class="w-full flex items-center justify-between group">
+<h2 class="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">tune</span>
+                            高级/隐性成本
+                        </h2>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors">expand_more</span>
+</button>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border border-dashed">
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">包装/耗材单件成本</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="0.80"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">国内单件运费 (至港口)</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="0.50"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">关税及清关单件成本</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="1.20"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">USD</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block font-body-sm text-body-sm text-on-surface-variant">退款/损坏预估率</label>
+<div class="relative flex items-center border border-border rounded-DEFAULT bg-surface input-focus-ring overflow-hidden">
+<input class="w-full border-none focus:ring-0 text-primary font-body-md bg-transparent p-2 pl-3" type="number" value="3"/>
+<span class="pr-3 text-outline font-label-caps text-label-caps">%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Results (40%) -->
+<div class="lg:col-span-5 relative">
+<div class="sticky top-28 space-y-6">
+<!-- Result Card (Green Top Border based on profit) -->
+<div class="bg-surface rounded-lg border border-border border-t-4 border-t-success shadow-[0_4px_12px_rgba(0,0,0,0.05)] overflow-hidden">
+<div class="p-card-padding bg-surface-bright border-b border-border">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">单件净利润 (Unit Net Profit)</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-display-lg text-success">$5.79</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded-sm">14.5% 利润率</span>
+</div>
+</div>
+<div class="p-card-padding space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span> 预期总收入 (500件)
+                                </span>
+<span class="font-body-md text-body-md font-medium text-primary">$19,995.00</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span> 预期总成本
+                                </span>
+<span class="font-body-md text-body-md font-medium text-primary">$17,100.00</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-variant last:border-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-success"></span> 预期总净利
+                                </span>
+<span class="font-body-md text-body-md font-bold text-success">$2,895.00</span>
+</div>
+</div>
+</div>
+<!-- Warning Card (Orange) -->
+<div class="bg-warning/10 border border-warning/30 rounded-lg p-4 flex gap-3 items-start">
+<span class="material-symbols-outlined text-warning mt-0.5">warning</span>
+<div>
+<h4 class="font-body-sm text-body-sm font-semibold text-warning mb-1">物流成本偏高警告</h4>
+<p class="font-body-sm text-body-sm text-warning/80">国际运费占售价超过 30% (当前为30.0%)，建议考虑组合装销售、提高客单价，或采用海运等批量运输方式降低均摊成本。</p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-3">
+<button class="w-full bg-secondary text-on-secondary font-button text-button py-3 rounded-DEFAULT hover:bg-secondary/90 transition-colors shadow-sm">保存计算记录</button>
+<button class="w-full border border-primary-container text-primary-container bg-surface font-button text-button py-3 rounded-DEFAULT hover:bg-surface-container-low transition-colors" onclick="location.href='plan.html'">用于出口方案</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary text-on-primary font-body-sm text-body-sm w-full mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-section-gap max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-sm text-headline-sm text-on-primary mb-4">TradeStart</div>
+<p class="text-primary-fixed-dim/80 text-xs">© 2024 TradeStart. All rights reserved.</p>
+</div>
+<div class="col-span-1 md:col-span-3 flex flex-wrap gap-x-8 gap-y-4 md:justify-end">
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">关于我们</a>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">风险免责</a>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">隐私政策</a>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="https://github.com/Joyce420/tradestart">GitHub</a>
+</div>
+<div class="col-span-1 md:col-span-4 mt-8 pt-8 border-t border-surface-tint/30 text-center">
+<p class="text-primary-fixed-dim/60 text-xs">模拟计算声明：计算结果仅供学习和方案估算，实际成本请向平台、货代及专业机构确认。</p>
+</div>
+</div>
+</footer>
+</body></html>

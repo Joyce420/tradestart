@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TradeStart - 外贸起步 | 零基础看懂商品出海</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Noto+Sans+SC:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#011d35",
+                        "secondary-container": "#79f3e8",
+                        "surface-dim": "#d8dadd",
+                        "danger": "#EF4444",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#314863",
+                        "on-primary-container": "#7a92b0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#324861",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "primary-fixed-dim": "#b0c9e8",
+                        "on-tertiary-container": "#7b92ad",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eceef1",
+                        "on-surface-variant": "#43474d",
+                        "on-surface": "#191c1e",
+                        "error": "#ba1a1a",
+                        "primary-container": "#102a43",
+                        "primary": "#00152a",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c3c6ce",
+                        "on-background": "#191c1e",
+                        "secondary-fixed": "#7cf6eb",
+                        "background": "#f7f9fc",
+                        "outline": "#74777e",
+                        "inverse-on-surface": "#eff1f4",
+                        "surface-container-highest": "#e0e3e6",
+                        "surface-container-low": "#f2f4f7",
+                        "secondary": "#006a63",
+                        "primary-fixed": "#d1e4ff",
+                        "border": "#D9E2EC",
+                        "inverse-primary": "#b0c9e8",
+                        "tertiary": "#001529",
+                        "tertiary-fixed-dim": "#b1c9e6",
+                        "on-secondary-container": "#006f68",
+                        "secondary-fixed-dim": "#5dd9ce",
+                        "success": "#27AB83",
+                        "warning": "#F59E0B",
+                        "tertiary-fixed": "#d0e4ff",
+                        "on-secondary-fixed-variant": "#00504b",
+                        "on-secondary-fixed": "#00201d",
+                        "tertiary-container": "#122a41",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f7f9fc",
+                        "surface-container-high": "#e6e8eb",
+                        "surface-tint": "#49607c",
+                        "surface-variant": "#e0e3e6",
+                        "surface": "#FFFFFF",
+                        "on-tertiary-fixed": "#021d33"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "card-padding": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "section-gap": "80px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "button": ["Noto Sans SC"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-sm": ["Noto Sans SC"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Noto Sans SC"],
+                        "body-md": ["Noto Sans SC"],
+                        "display-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "button": ["16px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Noto Sans SC', sans-serif; background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        h1, h2, h3, .font-hanken { font-family: 'Hanken Grotesk', sans-serif; }
+
+        .card-shadow { box-shadow: 0 2px 4px rgba(0,0,0,0.04); transition: all 0.3s ease; }
+        .card-shadow:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.08); border-color: theme('colors.secondary'); }
+
+        /* Custom Donut Chart CSS for Preview */
+        .donut-segment { fill: transparent; stroke-width: 20; stroke-linecap: round; }
+        .donut-hole { fill: transparent; }
+
+        /* Glassmorphism for specific elements */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .pulse-border {
+            animation: pulse-border-animation 2s infinite;
+        }
+        @keyframes pulse-border-animation {
+            0% { box-shadow: 0 0 0 0 rgba(0, 106, 99, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(0, 106, 99, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 106, 99, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 bg-surface/80 backdrop-blur-md dark:bg-primary/80 border-b border-outline-variant/30 dark:border-outline/20 shadow-sm transition-all">
+<div class="flex items-center justify-between px-gutter max-w-container-max mx-auto h-20">
+<!-- Brand -->
+<div class="flex items-center gap-2">
+<img alt="TradeStart Logo" class="h-8 w-8 object-contain" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">TradeStart (外贸起步)</span>
+</div>
+<!-- Navigation Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="text-secondary font-bold border-b-2 border-secondary pb-1 font-body-md text-body-md" href="index.html">首页</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-3 py-2 rounded-md font-body-md text-body-md" href="roadmap.html">外贸路线图</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-3 py-2 rounded-md font-body-md text-body-md" href="calculator.html">利润计算器</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low px-3 py-2 rounded-md font-body-md text-body-md" href="plan.html">出口方案</a>
+</div>
+<!-- Action -->
+<div class="hidden md:flex">
+<button class="bg-secondary text-on-secondary px-6 py-3 rounded-lg font-button text-button hover:bg-secondary/90 active:scale-95 transition-all shadow-sm" onclick="location.href='roadmap.html'">
+                    开始学习
+                </button>
+</div>
+<!-- Mobile Menu Toggle (hidden on desktop) -->
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- 1. Hero Section -->
+<section class="relative pt-24 pb-32 px-gutter overflow-hidden">
+<!-- Decorative Background Elements -->
+<div class="absolute inset-0 opacity-[0.05] pointer-events-none z-0 flex items-center justify-center">
+<svg fill="none" height="600" viewbox="0 0 1200 600" width="1200" xmlns="http://www.w3.org/2000/svg">
+<!-- Abstract Dotted World Map & Routes -->
+<path d="M200 300 Q 400 100, 600 250 T 1000 200" fill="none" stroke="currentColor" stroke-dasharray="8 8" stroke-width="2"></path>
+<path d="M600 250 Q 800 400, 950 350" fill="none" stroke="currentColor" stroke-dasharray="8 8" stroke-width="2"></path>
+<circle cx="200" cy="300" fill="currentColor" r="4"></circle>
+<circle cx="600" cy="250" fill="currentColor" r="4"></circle>
+<circle cx="1000" cy="200" fill="currentColor" r="4"></circle>
+<circle cx="950" cy="350" fill="currentColor" r="4"></circle>
+</svg>
+</div>
+<div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-primary-fixed/30 to-transparent -z-10 rounded-bl-[120px]"></div>
+<div class="absolute bottom-10 left-10 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl -z-10"></div>
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<!-- Text Content -->
+<div class="z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border shadow-sm mb-6 relative">
+<span class="text-[10px] bg-secondary/10 text-secondary px-1.5 py-0.5 rounded font-label-caps absolute -top-3 -right-6">B2B</span>
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">专业出海启蒙工具</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary mb-6 leading-tight">
+                        零基础，看懂<br/>一件商品如何卖到海外
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-xl">
+                        从选品、定价、获客到物流收款，完成你的第一份模拟出口方案。摒弃复杂的理论，用工具视角理解真实的商业运转。
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded-lg font-button text-button hover:bg-[#005a54] transition-colors shadow-sm flex items-center gap-2" onclick="location.href='roadmap.html'">
+                            开始学习外贸
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="bg-surface text-primary border border-primary px-8 py-4 rounded-lg font-button text-button hover:bg-surface-container-low transition-colors shadow-sm flex items-center gap-2">
+                            计算商品利润
+                            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">calculate</span>
+</button>
+</div>
+</div>
+<!-- Visual Composition (Bento style preview) -->
+<div class="relative h-[500px] w-full lg:w-[600px] mx-auto z-10">
+<!-- Main UI Card -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-[480px] bg-surface rounded-xl border border-border shadow-[0_20px_40px_rgba(16,42,67,0.08)] p-6 z-20">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-primary">出口全链路预览</h3>
+<span class="px-2 py-1 bg-success/10 text-success text-xs font-bold rounded">真实模拟</span>
+</div>
+<!-- Export Flow Nodes -->
+<div class="flex justify-between items-center mb-10 relative">
+<div class="absolute left-0 top-1/2 w-full h-[2px] bg-border -z-10 border-dashed border-t-2 bg-transparent"></div>
+<div class="absolute left-0 top-1/2 w-[60%] h-[2px] bg-secondary -z-10"></div>
+<div class="flex flex-col items-center gap-2 relative group">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-weight: 300;">factory</span>
+</div>
+<span class="text-[10px] text-on-surface-variant font-bold">国内工厂</span>
+<span class="absolute -bottom-5 text-[9px] bg-surface-container px-1 rounded text-outline font-label-caps">MOQ</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative group">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-weight: 300;">inventory_2</span>
+</div>
+<span class="text-[10px] text-on-surface-variant font-bold">集货入仓</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative group">
+<div class="w-10 h-10 rounded-full bg-surface border-2 border-secondary text-secondary flex items-center justify-center shadow-sm pulse-border">
+<span class="material-symbols-outlined text-[20px]" style="font-weight: 300;">flight_takeoff</span>
+</div>
+<span class="text-[10px] text-primary font-bold">国际物流</span>
+<span class="absolute -bottom-5 text-[9px] bg-surface-container px-1 rounded text-outline font-label-caps">FOB</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative group">
+<div class="w-10 h-10 rounded-full bg-surface border border-border text-outline flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-weight: 300;">description</span>
+</div>
+<span class="text-[10px] text-outline font-bold">海外清关</span>
+<span class="absolute -bottom-5 text-[9px] bg-surface-container px-1 rounded text-outline font-label-caps">HS Code</span>
+</div>
+<div class="flex flex-col items-center gap-2 relative group">
+<div class="w-10 h-10 rounded-full bg-surface border border-border text-outline flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-weight: 300;">store</span>
+</div>
+<span class="text-[10px] text-outline font-bold">海外客户</span>
+</div>
+</div>
+<!-- Mini Chart & Data -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low rounded-lg p-4 relative">
+<p class="text-xs text-on-surface-variant mb-1">预计净利润 (CNY)</p>
+<p class="font-headline-md text-headline-md text-secondary">¥ 12,450</p>
+<div class="mt-4 h-2 bg-border rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[65%]"></div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-4 flex flex-col items-center justify-center relative">
+<!-- Simple CSS Donut -->
+<svg class="mb-2" height="60" viewbox="0 0 100 100" width="60">
+<circle class="donut-hole" cx="50" cy="50" fill="transparent" r="40"></circle>
+<circle class="donut-segment" cx="50" cy="50" r="40" stroke="#D9E2EC" stroke-width="15"></circle>
+<circle class="donut-segment" cx="50" cy="50" r="40" stroke="#006a63" stroke-dasharray="180, 251" stroke-dashoffset="0" stroke-width="15" style="transform: rotate(-90deg); transform-origin: 50% 50%;"></circle>
+</svg>
+<span class="absolute top-[35%] font-bold text-sm text-primary">32%</span>
+<p class="text-xs text-on-surface-variant">综合利润率</p>
+</div>
+</div>
+</div>
+<!-- Floating Elements -->
+<div class="absolute -top-6 -right-6 w-48 bg-surface rounded-lg border border-border p-4 shadow-[0_12px_24px_rgba(0,0,0,0.06)] z-30 glass-panel">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">package</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary">选品完成</p>
+<p class="text-[10px] text-on-surface-variant">智能保温杯 SKU-01</p>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-8 -left-8 w-56 bg-surface rounded-lg border border-border p-4 shadow-[0_12px_24px_rgba(0,0,0,0.06)] z-30 glass-panel">
+<p class="text-xs text-on-surface-variant mb-2">物流成本占比预警</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-warning text-lg" style="font-variation-settings: 'FILL' 1;">warning</span>
+<p class="text-sm font-bold text-primary">空运费超过商品价值</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Core Feature Cards -->
+<section class="py-section-gap px-gutter bg-surface-container-low">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">掌握外贸核心逻辑</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">从零散的知识点，到一套可落地的业务框架。</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Feature 1 -->
+<div class="bg-surface p-card-padding rounded-xl border border-border card-shadow flex flex-col h-full">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed/50 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">route</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-3">学习外贸流程</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow mb-6">
+                            查看商品出口的完整路径。我们把复杂的跨国贸易拆解为8个清晰的步骤，帮您建立全局视角，不再迷失在碎片化信息中。
+                        </p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:underline w-fit" href="roadmap.html">
+                            探索路线图 <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+<!-- Feature 2 -->
+<div class="bg-surface p-card-padding rounded-xl border border-border card-shadow flex flex-col h-full border-t-4 border-t-secondary">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-3">计算真实利润</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow mb-6">
+                            综合采购、运费、平台佣金和营销成本。告别"毛利高=赚钱"的错觉，使用我们的专业计算器，看清每一分钱的去向。
+                        </p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:underline w-fit" href="calculator.html">
+                            试用计算器 <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+<!-- Feature 3 -->
+<div class="bg-surface p-card-padding rounded-xl border border-border card-shadow flex flex-col h-full">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/30 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">assignment</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-3">制作出口方案</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow mb-6">
+                            整理商品、市场、渠道和物流方案。在学习的过程中，逐步填补信息，最终导出一份属于你自己的、结构化的模拟出口商业计划书。
+                        </p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:underline w-fit" href="plan.html">
+                            查看方案示例 <span class="material-symbols-outlined text-sm">chevron_right</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Eight-Step Process Preview -->
+<section class="py-section-gap px-gutter bg-surface">
+<div class="max-w-container-max mx-auto">
+<div class="mb-12 flex justify-between items-end flex-wrap gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-2">标准出口路线图</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">8个关键节点，走通一件商品的跨国之旅</p>
+</div>
+<button class="text-secondary border border-secondary px-4 py-2 rounded-lg font-button text-sm hover:bg-secondary/5 transition-colors">
+                        查看完整详情
+                    </button>
+</div>
+<!-- Desktop Horizontal / Mobile Vertical Flex Map -->
+<div class="relative mt-8">
+<!-- Connecting Line (Desktop) -->
+<div class="hidden md:block absolute top-[45px] left-[5%] right-[5%] h-[2px] bg-border z-0"></div>
+<div class="hidden md:block absolute top-[45px] left-[5%] w-[35%] h-[2px] bg-secondary z-0"></div>
+<!-- Connecting Line (Mobile) -->
+<div class="md:hidden absolute left-[31px] top-[20px] bottom-[20px] w-[2px] bg-border z-0"></div>
+<div class="md:hidden absolute left-[31px] top-[20px] h-[35%] w-[2px] bg-secondary z-0"></div>
+<div class="flex flex-col md:flex-row justify-between gap-6 md:gap-4 relative z-10">
+<!-- Step 1: Completed -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group cursor-pointer w-full md:w-[12%]">
+<div class="w-16 h-16 rounded-xl bg-secondary text-on-secondary flex items-center justify-center shadow-md flex-shrink-0 transition-transform group-hover:-translate-y-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-secondary mb-1">01</p>
+<p class="font-bold text-sm text-primary">业务模式</p>
+</div>
+</div>
+<!-- Step 2: Completed -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group cursor-pointer w-full md:w-[12%]">
+<div class="w-16 h-16 rounded-xl bg-secondary text-on-secondary flex items-center justify-center shadow-md flex-shrink-0 transition-transform group-hover:-translate-y-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-secondary mb-1">02</p>
+<p class="font-bold text-sm text-primary">商品与供应</p>
+</div>
+</div>
+<!-- Step 3: Completed -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group cursor-pointer w-full md:w-[12%]">
+<div class="w-16 h-16 rounded-xl bg-secondary text-on-secondary flex items-center justify-center shadow-md flex-shrink-0 transition-transform group-hover:-translate-y-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">public</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-secondary mb-1">03</p>
+<p class="font-bold text-sm text-primary">目标市场</p>
+</div>
+</div>
+<!-- Step 4: Active -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group cursor-pointer w-full md:w-[12%]">
+<div class="w-16 h-16 rounded-xl bg-surface border-2 border-secondary text-secondary flex items-center justify-center shadow-lg pulse-border flex-shrink-0 transition-transform group-hover:-translate-y-1">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-secondary mb-1">04 (当前)</p>
+<p class="font-bold text-sm text-primary">获客渠道</p>
+</div>
+</div>
+<!-- Step 5: Locked/Pending -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group w-full md:w-[12%] opacity-60">
+<div class="w-16 h-16 rounded-xl bg-surface border border-border text-outline flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-outline mb-1">05</p>
+<p class="font-bold text-sm text-on-surface-variant">成本与利润</p>
+</div>
+</div>
+<!-- Step 6: Locked -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group w-full md:w-[12%] opacity-60">
+<div class="w-16 h-16 rounded-xl bg-surface border border-border text-outline flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-outline mb-1">06</p>
+<p class="font-bold text-sm text-on-surface-variant">收款与物流</p>
+</div>
+</div>
+<!-- Step 7: Locked -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group w-full md:w-[12%] opacity-60">
+<div class="w-16 h-16 rounded-xl bg-surface border border-border text-outline flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined">outbox</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-outline mb-1">07</p>
+<p class="font-bold text-sm text-on-surface-variant">订单履约</p>
+</div>
+</div>
+<!-- Step 8: Locked -->
+<div class="flex md:flex-col items-center gap-4 md:gap-3 group w-full md:w-[12%] opacity-60">
+<div class="w-16 h-16 rounded-xl bg-surface border border-border text-outline flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined">query_stats</span>
+</div>
+<div class="text-left md:text-center">
+<p class="text-xs font-bold text-outline mb-1">08</p>
+<p class="font-bold text-sm text-on-surface-variant">售后复盘</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Case Study Section -->
+<section class="py-section-gap px-gutter bg-primary-fixed/20">
+<div class="max-w-container-max mx-auto">
+<div class="bg-surface rounded-2xl border border-border shadow-md overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-5">
+<!-- Context Side -->
+<div class="lg:col-span-2 bg-primary p-8 text-on-primary flex flex-col justify-center relative overflow-hidden">
+<!-- Subtle abstract bg pattern -->
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<div class="relative z-10">
+<div class="inline-block bg-white/20 px-3 py-1 rounded text-xs font-bold mb-6 backdrop-blur-sm">
+                                    商业案例分析
+                                </div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile mb-4">
+                                    2 元的小零件，<br/>运费比商品贵，<br/>商家怎么赚钱？
+                                </h2>
+<p class="text-on-primary/80 font-body-md text-body-md mb-8">
+                                    通过真实场景的利润试算，理解"客单价"、"运费占比"与"销售模式"之间的杠杆关系。
+                                </p>
+<a class="inline-flex items-center gap-2 text-secondary-container hover:text-white transition-colors text-sm font-bold" href="#">
+                                    查看完整解析 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Data Comparison Side -->
+<div class="lg:col-span-3 p-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-primary">销售模式利润对比</h3>
+<span class="text-xs text-outline px-2 py-1 border border-border rounded">示例数据 (仅供参考)</span>
+</div>
+<div class="space-y-4">
+<!-- Scenario 1 -->
+<div class="p-4 rounded-lg border border-border bg-surface hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-center mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline group-hover:text-secondary">shopping_bag</span>
+<span class="font-bold text-primary">单件零售 (C端)</span>
+</div>
+<span class="px-2 py-0.5 bg-error-container text-on-error-container text-xs rounded font-bold">亏损</span>
+</div>
+<div class="grid grid-cols-4 gap-2 text-sm">
+<div><p class="text-xs text-on-surface-variant">售价</p><p>¥ 15</p></div>
+<div><p class="text-xs text-on-surface-variant">商品成本</p><p>¥ 2</p></div>
+<div><p class="text-xs text-on-surface-variant">单件运费</p><p class="text-error">¥ 25</p></div>
+<div><p class="text-xs text-on-surface-variant">净利润</p><p class="font-bold text-error">- ¥ 12</p></div>
+</div>
+</div>
+<!-- Scenario 2 -->
+<div class="p-4 rounded-lg border border-border bg-surface hover:border-secondary transition-colors cursor-pointer group">
+<div class="flex justify-between items-center mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline group-hover:text-secondary">inventory</span>
+<span class="font-bold text-primary">组合装/多件销售 (C端)</span>
+</div>
+<span class="px-2 py-0.5 bg-warning/20 text-warning text-xs rounded font-bold">微利</span>
+</div>
+<div class="grid grid-cols-4 gap-2 text-sm">
+<div><p class="text-xs text-on-surface-variant">售价 (10件)</p><p>¥ 120</p></div>
+<div><p class="text-xs text-on-surface-variant">商品成本</p><p>¥ 20</p></div>
+<div><p class="text-xs text-on-surface-variant">打包运费</p><p>¥ 45</p></div>
+<div><p class="text-xs text-on-surface-variant">净利润</p><p class="font-bold text-warning">¥ 25</p></div>
+</div>
+</div>
+<!-- Scenario 3 -->
+<div class="p-4 rounded-lg border-2 border-secondary bg-surface-container-low cursor-default relative overflow-hidden">
+<div class="absolute right-0 top-0 w-16 h-16 bg-secondary/10 rounded-bl-full flex justify-end items-start p-2">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex justify-between items-center mb-3 pr-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-bold text-primary">小批量批发 (小B端)</span>
+</div>
+<span class="px-2 py-0.5 bg-success/20 text-success text-xs rounded font-bold">健康</span>
+</div>
+<div class="grid grid-cols-4 gap-2 text-sm">
+<div><p class="text-xs text-on-surface-variant">售价 (500件)</p><p>¥ 3,500</p></div>
+<div><p class="text-xs text-on-surface-variant">商品成本</p><p>¥ 1,000</p></div>
+<div><p class="text-xs text-on-surface-variant">专线物流</p><p>¥ 600</p></div>
+<div><p class="text-xs text-on-surface-variant">净利润</p><p class="font-bold text-secondary text-lg">¥ 1,550</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Profit Calculator Preview -->
+<section class="py-section-gap px-gutter bg-surface">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">不再糊涂算账</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">专为新手设计的利润计算器，提前规避隐形成本。</p>
+</div>
+<div class="bg-surface rounded-2xl border border-border shadow-lg p-1">
+<div class="bg-surface-container-low rounded-xl border border-white/50 p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+<!-- Input Side (Abstracted) -->
+<div class="space-y-6">
+<div class="bg-surface p-5 rounded-lg border border-border">
+<h4 class="text-sm font-bold text-primary mb-4 flex items-center gap-2">
+<span class="w-6 h-6 rounded bg-primary-fixed text-primary flex items-center justify-center text-xs">1</span>
+                                    基础成本输入
+                                </h4>
+<div class="space-y-3">
+<div>
+<label class="block text-xs text-on-surface-variant mb-1">采购单价</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-border rounded-md text-sm pl-3 pr-12 py-2 text-on-surface focus:ring-secondary focus:border-secondary transition-colors cursor-not-allowed opacity-70" disabled="" type="text" value="45.00"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-outline">CNY</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs text-on-surface-variant mb-1">单件重量</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-border rounded-md text-sm pl-3 pr-10 py-2 text-on-surface cursor-not-allowed opacity-70" disabled="" type="text" value="0.8"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-outline">KG</div>
+</div>
+</div>
+<div>
+<label class="block text-xs text-on-surface-variant mb-1">目标售价</label>
+<div class="relative">
+<input class="w-full bg-surface border-secondary border-2 rounded-md text-sm pl-3 pr-12 py-2 text-primary font-bold shadow-[0_0_10px_rgba(0,106,99,0.1)]" disabled="" type="text" value="29.99"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs text-primary font-bold">USD</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Output Dashboard (Abstracted) -->
+<div class="bg-primary text-on-primary rounded-xl p-6 relative overflow-hidden">
+<!-- Background accent -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/20 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
+<h4 class="text-sm font-bold text-primary-fixed-dim mb-6">单件利润模拟结果</h4>
+<div class="flex items-end justify-between mb-8 border-b border-white/10 pb-6">
+<div>
+<p class="text-xs text-primary-fixed-dim mb-1">预计净利润</p>
+<p class="text-3xl font-display-lg text-white">¥ 48.50</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-primary-fixed-dim mb-1">利润率</p>
+<p class="text-xl font-bold text-secondary-container">22.8%</p>
+</div>
+</div>
+<div class="space-y-4">
+<p class="text-xs text-primary-fixed-dim mb-2">成本结构占比</p>
+<!-- Custom Bar Chart -->
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span>采购及国内运费</span>
+<span class="font-mono">¥48.00</span>
+</div>
+<div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed w-[45%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span>国际头程与尾程</span>
+<span class="font-mono">¥62.00</span>
+</div>
+<div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[58%] rounded-full"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span>平台佣金及营销</span>
+<span class="font-mono">¥54.00</span>
+</div>
+<div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-warning w-[50%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-4">
+<button class="w-full bg-secondary text-white py-3 rounded-lg text-sm font-bold hover:bg-[#005a54] transition-colors flex justify-center items-center gap-2">
+                                    去计算我的商品 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Bottom Action Section -->
+<section class="py-20 px-gutter bg-surface border-t border-border">
+<div class="max-w-3xl mx-auto text-center">
+<div class="w-16 h-16 rounded-full bg-primary-fixed/30 text-primary mx-auto flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">flag</span>
+</div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-primary mb-4">从看懂流程开始，完成你的第一份出口方案</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+                    不需要长篇大论，用工具和数据帮你理清思路。
+                </p>
+<button class="bg-secondary text-on-secondary px-10 py-4 rounded-lg font-button text-lg hover:bg-[#005a54] transition-all shadow-md hover:shadow-lg active:scale-95 inline-flex items-center gap-2" onclick="location.href='roadmap.html'">
+                    开始学习 <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer from JSON -->
+<footer class="w-full bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container font-body-sm text-body-sm">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-section-gap max-w-container-max mx-auto">
+<div class="md:col-span-1">
+<div class="font-headline-sm text-headline-sm text-on-primary mb-4 font-bold">TradeStart (外贸起步)</div>
+<p class="text-primary-fixed-dim/80 mb-4">零基础看懂商品出海，您的第一份模拟出口方案。</p>
+<p class="text-primary-fixed-dim/60 text-xs">© 2024 TradeStart. All rights reserved.</p>
+</div>
+<div class="md:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="flex flex-col space-y-3">
+<h4 class="font-bold text-secondary-container mb-2">关于</h4>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">关于我们</a>
+</div>
+<div class="flex flex-col space-y-3">
+<h4 class="font-bold text-secondary-container mb-2">法律</h4>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">风险免责</a>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">隐私政策</a>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="#">模拟计算声明</a>
+</div>
+<div class="flex flex-col space-y-3">
+<h4 class="font-bold text-secondary-container mb-2">社区</h4>
+<a class="text-primary-fixed-dim/80 hover:text-white hover:underline transition-all opacity-90 hover:opacity-100" href="https://github.com/Joyce420/tradestart">GitHub</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
