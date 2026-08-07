@@ -68,6 +68,44 @@
       return `<label style="display:block;margin-bottom:14px;font:500 14px/1.5 'Noto Sans SC',sans-serif;color:#334e68">${label}<input name="${name}" type="${type}" autocomplete="${autocomplete}" placeholder="${placeholder}" required style="display:block;width:100%;margin-top:6px;padding:11px 12px;border:1px solid #cbd5e1;border-radius:8px;font:400 15px/1.4 'Noto Sans SC',sans-serif;box-sizing:border-box"></label>`;
     }
 
+    function authErrorMessage(error) {
+      const message = `${error?.code || ""} ${error?.message || ""}`.toLowerCase();
+      if (message.includes("after 30 seconds") || message.includes("rate limit") || message.includes("over_email_send_rate_limit")) {
+        return "安全限制：30 秒内只能发送一次验证邮件。刚才的注册请求可能已成功，请先检查邮箱；如果没有收到，倒计时结束后再试。";
+      }
+      if (message.includes("user already registered")) return "该邮箱已经注册，请切换到“登录”。";
+      if (message.includes("invalid login credentials")) return "邮箱或密码不正确。";
+      if (message.includes("email not confirmed")) return "邮箱尚未验证，请先打开验证邮件完成确认。";
+      if (message.includes("password") && (message.includes("weak") || message.includes("least"))) return "密码强度不足，请使用至少 8 位并包含字母和数字的密码。";
+      if (message.includes("email") && (message.includes("invalid") || message.includes("validate"))) return "邮箱格式不正确，请检查后重试。";
+      if (message.includes("signup") && message.includes("disabled")) return "当前暂未开放新用户注册。";
+      return "操作失败，请稍后重试。";
+    }
+
+    function startCooldown(button, originalLabel, seconds = 30) {
+      let remaining = seconds;
+      button.disabled = true;
+      button.style.opacity = ".7";
+      button.style.cursor = "wait";
+      const update = () => {
+        if (!button.isConnected) return false;
+        button.textContent = `请等待 ${remaining} 秒`;
+        if (remaining <= 0) {
+          button.disabled = false;
+          button.style.opacity = "1";
+          button.style.cursor = "pointer";
+          button.textContent = originalLabel;
+          return false;
+        }
+        remaining -= 1;
+        return true;
+      };
+      update();
+      const timer = window.setInterval(() => {
+        if (!update()) window.clearInterval(timer);
+      }, 1000);
+    }
+
     function showSignedOutModal(mode = "signin") {
       const modal = createModal();
       modal.innerHTML = `
@@ -81,9 +119,9 @@
             <button type="button" data-mode="signup" style="flex:1;padding:10px;border:0;border-bottom:2px solid ${mode === "signup" ? "#006a63" : "transparent"};background:#fff;color:#102a43;font-weight:600">注册</button>
           </div>
           <form style="padding:0 24px 24px">
-            ${mode === "signup" ? field("昵称", "text", "displayName", "name", "怎么称呼你") : ""}
-            ${field("邮箱", "email", "email", "email", "name@example.com")}
-            ${field("密码", "password", "password", mode === "signup" ? "new-password" : "current-password", "至少 8 位")}
+            ${field(mode === "signup" ? "邮箱（登录账号）" : "邮箱", "email", "email", "email", "name@example.com")}
+            ${field("密码", "password", "password", mode === "signup" ? "new-password" : "current-password", "至少 8 位，建议包含字母和数字")}
+            ${mode === "signup" ? field("再次输入密码", "password", "confirmPassword", "new-password", "请再次输入密码") : ""}
             <p data-error role="alert" style="display:none;margin:0 0 12px;color:#ba1a1a;font-size:13px"></p>
             <button type="submit" style="width:100%;padding:12px;border:0;border-radius:8px;background:#006a63;color:#fff;font-size:15px;font-weight:700;cursor:pointer">${mode === "signup" ? "注册" : "登录"}</button>
             <p style="margin:14px 0 0;color:#829ab1;font-size:12px;text-align:center">注册即表示同意仅将账号用于保存本平台的学习与模拟数据。</p>
@@ -112,11 +150,17 @@
           errorBox.style.display = "block";
           return;
         }
+        if (mode === "signup" && values.password !== values.confirmPassword) {
+          errorBox.textContent = "两次输入的密码不一致，请重新确认";
+          errorBox.style.display = "block";
+          return;
+        }
         submit.disabled = true;
         submit.textContent = "处理中…";
         try {
           if (mode === "signup") {
-            const result = await TradeStartAuth.signUp({ email: values.email.trim(), password: values.password, displayName: values.displayName.trim() });
+            const email = values.email.trim();
+            const result = await TradeStartAuth.signUp({ email, password: values.password, displayName: email.split("@")[0] });
             closeModal(modal);
             TradeStart.toast(result.session ? "注册成功，已登录" : "注册成功，请前往邮箱完成验证");
           } else {
@@ -125,10 +169,15 @@
             TradeStart.toast("登录成功");
           }
         } catch (error) {
-          errorBox.textContent = error.message || "操作失败，请稍后重试";
+          const originalLabel = mode === "signup" ? "注册" : "登录";
+          const isCooldown = /after 30 seconds|rate limit|over_email_send_rate_limit/i.test(`${error?.code || ""} ${error?.message || ""}`);
+          errorBox.textContent = authErrorMessage(error);
           errorBox.style.display = "block";
-          submit.disabled = false;
-          submit.textContent = mode === "signup" ? "注册" : "登录";
+          if (isCooldown) startCooldown(submit, originalLabel);
+          else {
+            submit.disabled = false;
+            submit.textContent = originalLabel;
+          }
         }
       });
     }
