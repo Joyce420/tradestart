@@ -120,9 +120,18 @@
       advancedToggle.setAttribute("aria-expanded", String(!hidden));
       advancedToggle.querySelector("[data-chevron]").textContent = hidden ? "expand_more" : "expand_less";
     });
-    saveButton.addEventListener("click", () => {
-      TradeStart.set("savedCalculation", calculate());
-      TradeStart.toast("计算记录已保存在当前浏览器");
+    saveButton.addEventListener("click", async () => {
+      const existing = TradeStart.get("savedCalculation", null);
+      const calculation = { ...calculate(), clientId: existing?.clientId };
+      TradeStart.set("savedCalculation", calculation);
+      try {
+        const result = await TradeStartData.saveCalculation(calculation);
+        if (result.calculation) TradeStart.set("savedCalculation", result.calculation);
+        TradeStart.toast(result.cloud ? "计算记录已保存到云端" : "计算记录已保存在当前浏览器；登录后可同步");
+      } catch (error) {
+        console.warn("计算记录云端保存失败", error);
+        TradeStart.toast("云端保存失败，计算记录仍保存在当前浏览器", "warning");
+      }
     });
     useInPlan.addEventListener("click", () => {
       TradeStart.set("planCalculation", calculate());

@@ -18,6 +18,7 @@
     const state = {
       competitors: Array.isArray(savedDraft?.competitors) ? savedDraft.competitors : initialCompetitors,
       savedAt: savedDraft?.savedAt || null,
+      clientId: savedDraft?.clientId || null,
       dirty: false,
     };
     const tableBody = document.getElementById("competitor-table-body");
@@ -63,14 +64,27 @@
       });
     }
 
-    function saveDraft() {
+    async function saveDraft(showToast = true) {
       state.savedAt = new Date().toISOString();
       state.dirty = false;
-      TradeStart.set("planDraft", { competitors: state.competitors, savedAt: state.savedAt });
+      const draft = { competitors: state.competitors, savedAt: state.savedAt, clientId: state.clientId };
+      TradeStart.set("planDraft", draft);
       savedStatus.textContent = "草稿已保存";
       savedStatus.parentElement.classList.add("text-success");
       savedStatus.parentElement.classList.remove("text-on-surface-variant");
-      TradeStart.toast("出口方案草稿已保存在当前浏览器");
+      try {
+        const result = await TradeStartData.savePlan(draft);
+        if (result.draft) {
+          state.clientId = result.draft.clientId;
+          TradeStart.set("planDraft", result.draft);
+        }
+        savedStatus.textContent = result.cloud ? "云端已保存" : "草稿已保存";
+        if (showToast) TradeStart.toast(result.cloud ? "出口方案草稿已保存到云端" : "出口方案草稿已保存在当前浏览器；登录后可同步");
+      } catch (error) {
+        console.warn("出口方案云端保存失败", error);
+        savedStatus.textContent = "本地已保存，云端同步失败";
+        if (showToast) TradeStart.toast("云端保存失败，草稿仍保存在当前浏览器", "warning");
+      }
     }
 
     document.getElementById("add-competitor").addEventListener("click", () => {
@@ -94,14 +108,14 @@
     });
 
     form.addEventListener("input", markDirty);
-    document.getElementById("save-draft").addEventListener("click", saveDraft);
+    document.getElementById("save-draft").addEventListener("click", () => void saveDraft());
     document.getElementById("previous-plan-step").addEventListener("click", () => TradeStart.toast("当前原型仅展示步骤 3"));
-    document.getElementById("next-plan-step").addEventListener("click", () => {
+    document.getElementById("next-plan-step").addEventListener("click", async () => {
       if (!state.competitors.length || !state.competitors.some((item) => item.difference.trim())) {
         TradeStart.toast("请先完成竞品与差异化分析", "warning");
         return;
       }
-      saveDraft();
+      await saveDraft(false);
       TradeStart.toast("步骤 3 已保存；下一步骤将在后续前端页面中补充");
     });
     document.getElementById("export-plan").addEventListener("click", () => TradeStart.toast("完成全部方案步骤后才能导出 PDF", "warning"));

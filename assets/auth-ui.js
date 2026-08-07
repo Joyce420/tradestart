@@ -13,10 +13,38 @@
 
     let session = null;
     let subscription = null;
+    let handledSessionUserId = null;
+
+    async function handleSessionData(nextSession) {
+      const userId = nextSession?.user?.id;
+      if (!userId) {
+        handledSessionUserId = null;
+        return;
+      }
+      if (handledSessionUserId === userId || !window.TradeStartData) return;
+      handledSessionUserId = userId;
+      try {
+        const result = await TradeStartData.hydrateMissingFromCloud(nextSession);
+        if (result.hydratedKeys.length) {
+          TradeStart.toast("已载入你的云端学习数据");
+          window.setTimeout(() => window.location.reload(), 500);
+        } else if (result.reason === "local-present") {
+          const noticeKey = `tradestart.syncNotice.${userId}`;
+          if (!sessionStorage.getItem(noticeKey)) {
+            sessionStorage.setItem(noticeKey, "1");
+            TradeStart.toast("检测到本地数据，可在“我的账号”中选择同步");
+          }
+        }
+      } catch (error) {
+        console.warn("云端数据载入失败", error);
+        TradeStart.toast("云端数据暂时无法载入，本地功能仍可使用", "warning");
+      }
+    }
 
     function updateButton(nextSession) {
       session = nextSession;
       authButton.textContent = session?.user?.email ? "我的账号" : "登录";
+      void handleSessionData(nextSession);
     }
 
     function closeModal(modal) {
@@ -106,6 +134,7 @@
     }
 
     function showAccountModal() {
+      const hasLocalData = TradeStartData?.hasLocalData?.() || false;
       const modal = createModal();
       modal.innerHTML = `
         <div style="width:min(430px,100%);background:#fff;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.24);padding:24px;font-family:'Noto Sans SC',sans-serif;box-sizing:border-box">
@@ -113,16 +142,35 @@
             <div><h2 id="auth-modal-title" style="margin:0;color:#102a43;font-size:24px">我的账号</h2><p style="margin:8px 0 0;color:#627d98;font-size:14px">${session.user.email}</p></div>
             <button type="button" data-close aria-label="关闭" style="border:0;background:transparent;font-size:26px;color:#627d98;cursor:pointer">×</button>
           </div>
-          <div style="margin-top:22px;padding:14px;border-radius:10px;background:#f7f9fc;color:#486581;font-size:14px">云端数据同步将在下一批接入。当前本地记录不会被删除。</div>
+          <div style="margin-top:22px;padding:14px;border-radius:10px;background:#f7f9fc;color:#486581;font-size:14px">路线图进度、利润计算记录和出口方案草稿可保存到云端。同步前不会自动覆盖当前浏览器数据。</div>
+          <button type="button" data-sync ${hasLocalData ? "" : "disabled"} style="width:100%;margin-top:14px;padding:11px;border:0;border-radius:8px;background:${hasLocalData ? "#006a63" : "#cbd5e1"};color:#fff;font-weight:700;cursor:${hasLocalData ? "pointer" : "not-allowed"}">${hasLocalData ? "同步本地数据到云端" : "当前没有可同步的本地数据"}</button>
           <button type="button" data-signout style="width:100%;margin-top:18px;padding:11px;border:1px solid #102a43;border-radius:8px;background:#fff;color:#102a43;font-weight:700;cursor:pointer">退出登录</button>
         </div>`;
       modal.querySelector("[data-close]").addEventListener("click", () => closeModal(modal));
       modal.addEventListener("click", (event) => {
         if (event.target === modal) closeModal(modal);
       });
+      modal.querySelector("[data-sync]").addEventListener("click", async (event) => {
+        if (!hasLocalData) return;
+        if (!window.confirm("确认将当前浏览器中的路线图、计算记录和方案草稿同步到你的云端账号吗？")) return;
+        const button = event.currentTarget;
+        button.disabled = true;
+        button.textContent = "同步中…";
+        try {
+          const result = await TradeStartData.syncLocalData();
+          button.textContent = result.synced ? `已同步 ${result.synced} 类数据` : "没有需要同步的数据";
+          TradeStart.toast(result.synced ? "本地数据已同步到云端" : "没有需要同步的数据");
+        } catch (error) {
+          button.disabled = false;
+          button.textContent = "重新同步本地数据";
+          TradeStart.toast(error.message || "同步失败，请稍后重试", "error");
+        }
+      });
       modal.querySelector("[data-signout]").addEventListener("click", async () => {
         try {
+          const userId = session.user.id;
           await TradeStartAuth.signOut();
+          TradeStartData?.clearOwnedData?.(userId);
           closeModal(modal);
           TradeStart.toast("已退出登录");
         } catch (error) {

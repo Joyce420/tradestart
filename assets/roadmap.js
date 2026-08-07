@@ -12,8 +12,9 @@
     const quizTitle = document.getElementById("quiz-title");
     const markComplete = document.getElementById("mark-complete");
 
-    function save() {
+    async function save() {
       TradeStart.set("roadmapProgress", state);
+      return TradeStartData.saveRoadmap(state);
     }
 
     function render() {
@@ -62,8 +63,12 @@
          <textarea data-notes rows="7" style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;resize:vertical" placeholder="示例：供应商A｜MOQ 500件｜¥35/件">${state.supplierNotes || ""}</textarea>`,
         (dialog) => {
           state.supplierNotes = dialog.querySelector("[data-notes]").value.trim();
-          save();
-          TradeStart.toast("供应商记录已保存在当前浏览器");
+          void save()
+            .then((result) => TradeStart.toast(result.cloud ? "供应商记录已保存到云端" : "供应商记录已保存在当前浏览器；登录后可同步"))
+            .catch((error) => {
+              console.warn("供应商记录云端保存失败", error);
+              TradeStart.toast("云端保存失败，记录仍保存在当前浏览器", "warning");
+            });
           return true;
         },
       );
@@ -79,7 +84,7 @@
         (dialog) => {
           const answers = new FormData(dialog.querySelector("form"));
           state.quizScore = [answers.get("q1") === "min", answers.get("q2") === "factory", answers.get("q3") === "weight"].filter(Boolean).length;
-          save();
+          void save().catch((error) => console.warn("测验进度云端保存失败", error));
           render();
           TradeStart.toast(state.quizScore === 3 ? "回答正确，可以完成本节点" : `答对 ${state.quizScore}/3，请复习后重试`, state.quizScore === 3 ? "success" : "warning");
           return true;
@@ -87,15 +92,20 @@
       );
     });
 
-    markComplete.addEventListener("click", () => {
+    markComplete.addEventListener("click", async () => {
       if (state.quizScore < 3) {
         TradeStart.toast("请先完成 3 道小测验", "warning");
         return;
       }
       if (!state.completed.includes(2)) state.completed.push(2);
-      save();
+      let cloudSaved = false;
+      try {
+        cloudSaved = (await save()).cloud;
+      } catch (error) {
+        console.warn("学习进度云端保存失败", error);
+      }
       render();
-      TradeStart.toast("节点 2 已完成，学习进度已保存");
+      TradeStart.toast(cloudSaved ? "节点 2 已完成，学习进度已保存到云端" : "节点 2 已完成，学习进度已保存在当前浏览器");
     });
 
     document.getElementById("previous-node").addEventListener("click", () => {
