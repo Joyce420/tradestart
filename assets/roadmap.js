@@ -1,10 +1,16 @@
 (function () {
   document.addEventListener("DOMContentLoaded", () => {
     const state = TradeStart.get("roadmapProgress", {
-      completed: [1],
+      completed: [],
       quizScore: 0,
       supplierNotes: "",
     });
+    const hadLegacyNodeOneCompletion = Array.isArray(state.completed) && state.completed.includes(1);
+    state.completed = Array.isArray(state.completed) ? state.completed.filter((node) => node !== 1) : [];
+    if (hadLegacyNodeOneCompletion) {
+      TradeStart.set("roadmapProgress", state);
+      void TradeStartData.saveRoadmap(state).catch((error) => console.warn("演示进度清理失败", error));
+    }
     const nodes = Array.from(document.querySelectorAll("#roadmap-nodes > .cursor-pointer"));
     const progressText = document.getElementById("roadmap-progress-text");
     const completedText = document.getElementById("roadmap-completed-text");
@@ -109,7 +115,7 @@
     });
 
     document.getElementById("previous-node").addEventListener("click", () => {
-      TradeStart.toast("节点 1 已完成；当前原型展示节点 2 内容");
+      TradeStart.toast("节点 1 详细内容尚未补充；当前原型展示节点 2", "warning");
     });
     document.getElementById("next-node").addEventListener("click", () => {
       if (!state.completed.includes(2)) {
@@ -121,7 +127,7 @@
     nodes.forEach((node, index) => {
       node.addEventListener("click", () => {
         if (index === 1) document.querySelector("section.bg-surface.rounded-xl")?.scrollIntoView({ behavior: "smooth" });
-        else TradeStart.toast(index === 0 ? "节点 1 已完成" : "请按顺序完成当前学习节点", index === 0 ? "success" : "warning");
+        else TradeStart.toast(index === 0 ? "节点 1 详细内容尚未补充；当前原型展示节点 2" : "该节点详细内容尚未补充", "warning");
       });
     });
 
