@@ -1,5 +1,5 @@
 (function () {
-  const initialCompetitors = [
+  const legacyDemoCompetitors = [
     { name: "Brand A (Yeti)", platform: "Amazon", price: 39.99, pros: "品牌力强，品质极佳", cons: "价格高，溢价严重", difference: "智能测温，平替价格 ($19.99)" },
     { name: "Brand B (Generic)", platform: "B2B / 独立站", price: 12.99, pros: "极致低价", cons: "质量差，无品牌溢价", difference: "提供定制化包装与 1 年质保" },
   ];
@@ -15,15 +15,19 @@
       difference: document.getElementById("competitor-difference"),
     };
     const savedDraft = TradeStart.get("planDraft", null);
+    const isLegacyDemo = Array.isArray(savedDraft?.competitors)
+      && JSON.stringify(savedDraft.competitors) === JSON.stringify(legacyDemoCompetitors);
+    const savedCompetitors = isLegacyDemo ? [] : savedDraft?.competitors;
     const state = {
-      competitors: Array.isArray(savedDraft?.competitors) ? savedDraft.competitors : initialCompetitors,
-      savedAt: savedDraft?.savedAt || null,
+      competitors: Array.isArray(savedCompetitors) ? savedCompetitors : [],
+      savedAt: isLegacyDemo ? null : savedDraft?.savedAt || null,
       clientId: savedDraft?.clientId || null,
       dirty: false,
     };
     const tableBody = document.getElementById("competitor-table-body");
     const count = document.getElementById("competitor-count");
     const savedStatus = document.getElementById("draft-status");
+    savedStatus.textContent = state.savedAt ? "草稿已保存" : "尚未保存";
 
     function escapeHtml(value) {
       return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
@@ -49,8 +53,16 @@
         tableBody.insertAdjacentHTML("beforeend", `<tr><td class="py-6 text-center border-dashed border-2 border-border bg-surface-bright/50 rounded-lg m-2" colspan="5"><span class="text-on-surface-variant font-body-sm">还可以添加 ${3 - state.competitors.length} 个核心竞品</span></td></tr>`);
       }
       count.textContent = `已添加 ${state.competitors.length}/3`;
-      document.getElementById("criterion-competitor").checked = state.competitors.length > 0;
-      document.getElementById("criterion-difference").checked = state.competitors.some((item) => item.difference.trim());
+      const hasCompetitor = state.competitors.length > 0;
+      const hasDifference = state.competitors.some((item) => item.difference.trim());
+      document.getElementById("criterion-competitor").checked = hasCompetitor;
+      document.getElementById("criterion-difference").checked = hasDifference;
+      document.getElementById("criterion-competitor-label").classList.toggle("line-through", hasCompetitor);
+      document.getElementById("criterion-difference-label").classList.toggle("line-through", hasDifference);
+      const completed = hasCompetitor && hasDifference;
+      document.getElementById("plan-progress-text").textContent = completed ? "17%" : "0%";
+      document.getElementById("plan-progress-bar").style.width = completed ? "16.7%" : "0%";
+      document.getElementById("plan-progress-note").textContent = completed ? "已完成 1/6 个步骤" : "尚未完成任何步骤";
       document.getElementById("preview-competitors").textContent = `已分析竞品: ${state.competitors.map((item) => item.name).join(", ") || "暂未添加"}`;
       document.getElementById("preview-difference").textContent = `核心差异化: ${state.competitors[0]?.difference || "暂未填写"}`;
 
@@ -123,7 +135,14 @@
     const importedCalculation = TradeStart.get("planCalculation", null);
     if (importedCalculation) {
       const symbol = importedCalculation.currency === "CNY" ? "¥" : "$";
-      TradeStart.toast(`已带入利润测算：单件净利润 ${symbol}${Number(importedCalculation.unitProfit).toFixed(2)}`);
+      document.getElementById("imported-calculation").classList.remove("hidden");
+      document.getElementById("imported-unit-profit").textContent = `单件净利润 ${symbol}${Number(importedCalculation.unitProfit).toFixed(2)}`;
+      document.getElementById("imported-margin").textContent = `利润率 ${Number(importedCalculation.margin).toFixed(1)}%`;
+    }
+    if (isLegacyDemo) {
+      const cleanedDraft = { competitors: [], savedAt: null, clientId: state.clientId };
+      TradeStart.set("planDraft", cleanedDraft);
+      void TradeStartData.savePlan(cleanedDraft).catch((error) => console.warn("演示竞品清理失败", error));
     }
     render();
   });

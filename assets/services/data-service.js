@@ -94,17 +94,18 @@
 
     const modules = await publishedModules();
     const completed = new Set(state.completed || []);
+    const notes = state.notes && typeof state.notes === "object" ? state.notes : {};
     const now = new Date().toISOString();
     const rows = modules.map((module) => {
       const position = Number(module.sort_order);
-      const hasNodeTwoWork = position === 2 && (Number(state.quizScore) > 0 || state.supplierNotes);
-      const status = completed.has(position) ? "completed" : hasNodeTwoWork ? "in_progress" : "not_started";
+      const note = String(notes[position] || (position === 2 ? state.supplierNotes || "" : ""));
+      const status = completed.has(position) ? "completed" : note ? "in_progress" : "not_started";
       return {
         user_id: user.id,
         module_id: module.id,
         status,
-        score: position === 2 ? (Math.max(0, Math.min(3, Number(state.quizScore) || 0)) / 3) * 100 : null,
-        task_json: position === 2 ? { supplierNotes: state.supplierNotes || "" } : {},
+        score: null,
+        task_json: note ? { note } : {},
         completed_at: status === "completed" ? now : null,
       };
     });
@@ -194,11 +195,14 @@
     if (error) throw error;
     if (!data?.length) return null;
     const positionById = new Map(modules.map((module) => [module.id, Number(module.sort_order)]));
-    const nodeTwo = data.find((row) => positionById.get(row.module_id) === 2);
+    const notes = Object.fromEntries(data
+      .map((row) => [positionById.get(row.module_id), row.task_json?.note || row.task_json?.supplierNotes || ""])
+      .filter(([position, note]) => position && note));
     return {
       completed: data.filter((row) => row.status === "completed").map((row) => positionById.get(row.module_id)).filter(Boolean),
-      quizScore: Math.max(0, Math.min(3, Math.round((Number(nodeTwo?.score) || 0) * 3 / 100))),
-      supplierNotes: nodeTwo?.task_json?.supplierNotes || "",
+      notes,
+      quizScore: 0,
+      supplierNotes: notes[2] || "",
     };
   }
 

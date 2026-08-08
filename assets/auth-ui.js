@@ -1,15 +1,15 @@
 (function () {
   document.addEventListener("DOMContentLoaded", async () => {
-    const learningButton = Array.from(document.querySelectorAll("button"))
-      .find((button) => button.textContent.trim() === "开始学习");
-    if (!learningButton?.parentElement) return;
+    const authSlot = document.querySelector("[data-auth-slot]");
+    if (!authSlot) return;
 
     const authButton = document.createElement("button");
     authButton.id = "auth-button";
     authButton.type = "button";
-    authButton.textContent = "登录";
-    authButton.className = "border border-primary text-primary px-4 py-2 rounded-lg font-button text-button hover:bg-surface-container-low transition-colors";
-    learningButton.parentElement.insertBefore(authButton, learningButton);
+    authButton.textContent = "同步进度";
+    authButton.title = "登录后可跨设备同步学习进度";
+    authButton.className = "hidden md:inline-flex items-center border border-outline-variant text-on-surface-variant px-3 py-2 rounded-lg font-button text-sm hover:border-primary hover:text-primary hover:bg-surface-container-low transition-colors";
+    authSlot.prepend(authButton);
 
     let session = null;
     let subscription = null;
@@ -43,7 +43,7 @@
 
     function updateButton(nextSession) {
       session = nextSession;
-      authButton.textContent = session?.user?.email ? "我的账号" : "登录";
+      authButton.textContent = session?.user?.email ? "我的账号" : "同步进度";
       void handleSessionData(nextSession);
     }
 

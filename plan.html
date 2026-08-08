@@ -140,11 +140,7 @@
 <a class="text-secondary font-bold border-b-2 border-secondary h-full flex items-center px-2" href="plan.html">出口方案</a>
 </div>
 <!-- Actions -->
-<div class="flex items-center gap-4">
-<button class="bg-secondary text-on-secondary font-button text-button px-6 py-2.5 rounded-lg hover:bg-secondary/90 active:scale-95 transition-all shadow-sm">
-                    开始学习
-                </button>
-</div>
+<div class="flex items-center gap-4" data-auth-slot></div>
 </div>
 </nav>
 <!-- Main Workspace -->
@@ -155,9 +151,9 @@
 <div>
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-outline">folder_open</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">项目 / 智能保温杯出口方案</span>
-<span class="inline-flex items-center gap-1 bg-success/10 text-success px-2 py-0.5 rounded-full font-label-caps text-label-caps">
-<span class="material-symbols-outlined text-[14px]">check_circle</span> <span id="draft-status">草稿已保存</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">项目 / 我的出口方案</span>
+<span class="inline-flex items-center gap-1 bg-surface-container-low text-on-surface-variant px-2 py-0.5 rounded-full font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]">edit_note</span> <span id="draft-status">尚未保存</span>
                         </span>
 </div>
 <h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary">创建我的出口方案</h1>
@@ -174,14 +170,14 @@
 <div class="flex-grow">
 <div class="flex justify-between mb-2">
 <span class="font-label-caps text-label-caps text-on-surface-variant">总进度</span>
-<span class="font-label-caps text-label-caps text-secondary font-bold">50%</span>
+<span class="font-label-caps text-label-caps text-secondary font-bold" id="plan-progress-text">0%</span>
 </div>
 <div class="w-full bg-surface-container-highest rounded-full h-2 overflow-hidden">
-<div class="bg-secondary h-2 rounded-full transition-all duration-500" style="width: 50%"></div>
+<div class="bg-secondary h-2 rounded-full transition-all duration-500" id="plan-progress-bar" style="width: 0%"></div>
 </div>
 </div>
-<div class="hidden md:flex text-body-sm text-on-surface-variant whitespace-nowrap">
-                    预计还需 15 分钟完成
+<div class="hidden md:flex text-body-sm text-on-surface-variant whitespace-nowrap" id="plan-progress-note">
+                    尚未完成任何步骤
                 </div>
 </div>
 </header>
@@ -191,33 +187,33 @@
 <aside class="col-span-1 bg-surface border border-border rounded-xl shadow-sm p-card-padding sticky top-28">
 <nav aria-label="Progress">
 <ol class="overflow-hidden" role="list">
-<!-- Step 1: Completed -->
+<!-- Step 1: Not Started -->
 <li class="relative pb-8">
-<div aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-secondary"></div>
+<div aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-border"></div>
 <a class="relative flex items-start group" href="#">
 <span class="h-9 flex items-center">
-<span class="relative z-10 w-8 h-8 flex items-center justify-center bg-secondary rounded-full group-hover:bg-secondary/90 transition-colors">
-<span class="material-symbols-outlined text-on-secondary text-sm icon-fill">check</span>
+<span class="relative z-10 w-8 h-8 flex items-center justify-center bg-surface border-2 border-border rounded-full">
+<span class="text-on-surface-variant text-sm">1</span>
 </span>
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-primary tracking-tight">商品与模式</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">已完成</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">未开始</span>
 </span>
 </a>
 </li>
-<!-- Step 2: Completed -->
+<!-- Step 2: Not Started -->
 <li class="relative pb-8">
-<div aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-secondary"></div>
+<div aria-hidden="true" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-border"></div>
 <a class="relative flex items-start group" href="#">
 <span class="h-9 flex items-center">
-<span class="relative z-10 w-8 h-8 flex items-center justify-center bg-secondary rounded-full group-hover:bg-secondary/90 transition-colors">
-<span class="material-symbols-outlined text-on-secondary text-sm icon-fill">check</span>
+<span class="relative z-10 w-8 h-8 flex items-center justify-center bg-surface border-2 border-border rounded-full">
+<span class="text-on-surface-variant text-sm">2</span>
 </span>
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-primary tracking-tight">目标市场与客户</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">已完成</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">未开始</span>
 </span>
 </a>
 </li>
@@ -279,6 +275,12 @@
 </aside>
 <!-- Right: Main Content (75%) -->
 <div class="col-span-1 lg:col-span-3 space-y-6">
+<div class="hidden bg-secondary-container/20 border border-secondary/30 rounded-xl p-4" id="imported-calculation">
+<div class="flex items-start justify-between gap-4">
+<div><div class="font-headline-sm text-primary">已带入利润测算</div><p class="text-body-sm text-on-surface-variant mt-1">来自利润计算器，可在后续“成本与报价”步骤继续使用。</p></div>
+<div class="text-right"><div class="font-bold text-secondary" id="imported-unit-profit">--</div><div class="text-body-sm text-on-surface-variant" id="imported-margin">--</div></div>
+</div>
+</div>
 <!-- Inner Layout: Form + Context Sidebar -->
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 <!-- Form Area -->
@@ -351,7 +353,7 @@
 <div class="bg-surface border border-border rounded-xl shadow-sm p-card-padding">
 <h3 class="font-headline-sm text-headline-sm text-primary mb-4 flex items-center justify-between">
 <span>竞品对比矩阵</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant font-normal" id="competitor-count">已添加 2/3</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-normal" id="competitor-count">已添加 0/3</span>
 </h3>
 <div class="overflow-x-auto">
 <table class="w-full text-left border-collapse">
@@ -458,12 +460,12 @@
 <span>✅</span> 完成标准
                             </h4>
 <div class="flex items-center gap-2 mb-2">
-<input checked="" class="text-secondary rounded border-outline-variant bg-surface-container-high" disabled="" id="criterion-competitor" type="checkbox"/>
-<span class="font-body-sm text-body-sm text-on-surface-variant line-through">至少添加 1 个竞品</span>
+<input class="text-secondary rounded border-outline-variant bg-surface-container-high" disabled="" id="criterion-competitor" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="criterion-competitor-label">至少添加 1 个竞品</span>
 </div>
 <div class="flex items-center gap-2">
-<input checked="" class="text-secondary rounded border-outline-variant bg-surface-container-high" disabled="" id="criterion-difference" type="checkbox"/>
-<span class="font-body-sm text-body-sm text-on-surface-variant line-through">填写明确的差异化策略</span>
+<input class="text-secondary rounded border-outline-variant bg-surface-container-high" disabled="" id="criterion-difference" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="criterion-difference-label">填写明确的差异化策略</span>
 </div>
 </div>
 </aside>
@@ -518,7 +520,7 @@
 <div class="px-6 py-4 border-b border-border flex items-center justify-between bg-surface-bright">
 <div>
 <h2 class="font-headline-md text-headline-md text-primary">出口方案预览</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">智能保温杯出口方案 (草稿)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">我的出口方案（草稿）</p>
 </div>
 <button class="text-outline hover:text-primary p-2 rounded-full hover:bg-surface-container transition-colors" onclick="toggleReportModal()">
 <span class="material-symbols-outlined">close</span>
@@ -587,8 +589,8 @@
 <script src="assets/config.js"></script>
 <script src="assets/services/supabase-client.js"></script>
 <script src="assets/services/auth-service.js"></script>
-<script src="assets/services/data-service.js"></script>
+<script src="assets/services/data-service.js?v=20260808-1"></script>
 <script src="assets/common.js"></script>
-<script src="assets/auth-ui.js"></script>
-<script src="assets/plan.js"></script>
+<script src="assets/auth-ui.js?v=20260808-1"></script>
+<script src="assets/plan.js?v=20260808-1"></script>
 </body></html>
