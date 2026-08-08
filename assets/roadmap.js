@@ -74,16 +74,55 @@
     },
   ];
 
+  const formSchemas = {
+    1: [
+      { key: "businessMode", label: "业务模式", type: "select", required: true, options: ["B2B 出口", "跨境电商"], placeholder: "请选择业务模式" },
+      { key: "reason", label: "选择理由", type: "textarea", required: true, placeholder: "用一两句话说明为什么选择这个模式" },
+      { key: "notes", label: "额外备注", type: "textarea", placeholder: "可补充你的资源、预算或顾虑" },
+    ],
+    2: [
+      { key: "category", label: "核心品类", type: "text", required: true, placeholder: "例如：智能保温杯" },
+      { key: "notes", label: "最关心的问题 / 额外备注", type: "textarea", placeholder: "例如：想确认供应商的定制能力和样品费用" },
+    ],
+    3: [
+      { key: "targetMarket", label: "目标国家或区域", type: "text", required: true, placeholder: "例如：美国西海岸" },
+      { key: "customerProfile", label: "目标客户画像", type: "textarea", required: true, placeholder: "一句话描述客户是谁、在什么场景使用" },
+      { key: "verifiedDemand", label: "已验证的购买需求", type: "textarea", required: true, placeholder: "写下你从搜索、评论或询盘中看到的需求" },
+      { key: "evidence", label: "证据来源 / 额外备注", type: "textarea", placeholder: "可填写平台链接、评论关键词或调研备注" },
+    ],
+    4: [
+      { key: "leadChannel", label: "主获客渠道", type: "select", required: true, options: ["B2B 平台", "主动开发", "内容获客", "展会 / 行业社群"], placeholder: "请选择主渠道" },
+      { key: "firstTouch", label: "首批触达方式或客户来源", type: "textarea", required: true, placeholder: "例如：从 Alibaba 询盘中筛选 5 家批发商" },
+      { key: "usp", label: "核心卖点 / 额外备注", type: "textarea", placeholder: "可填写准备使用的产品卖点" },
+    ],
+    5: [
+      { key: "targetMargin", label: "目标利润率", type: "number", required: true, min: 0, max: 100, suffix: "%", placeholder: "例如：20" },
+      { key: "minimumQuote", label: "最低可接受报价", type: "number", required: true, min: 0, suffix: "USD / 件", placeholder: "例如：18.5" },
+      { key: "costNotes", label: "成本相关备注", type: "textarea", placeholder: "可填写测算中最不确定的成本项" },
+    ],
+    6: [
+      { key: "transportMethod", label: "运输方式", type: "select", required: true, options: ["快递", "空运", "海运", "铁路 / 专线"], placeholder: "请选择运输方式" },
+      { key: "incoterm", label: "贸易术语", type: "select", required: true, options: ["EXW", "FOB", "CIF", "DDP"], placeholder: "请选择 Incoterms" },
+      { key: "documents", label: "需要准备的主要单据", type: "checkboxes", required: true, options: ["商业发票", "装箱单", "合同 / PI", "报关资料 / HS Code", "原产地证"] },
+      { key: "notes", label: "额外说明", type: "textarea", placeholder: "可补充收款方式或特殊运输要求" },
+    ],
+    7: [
+      { key: "orderInfo1", label: "订单关键信息 1", type: "text", required: true, placeholder: "例如：产品规格与包装" },
+      { key: "orderInfo2", label: "订单关键信息 2", type: "text", required: true, placeholder: "例如：数量、单价与付款条件" },
+      { key: "orderInfo3", label: "订单关键信息 3", type: "text", required: true, placeholder: "例如：交期、验货与交付方式" },
+      { key: "fulfillmentNotes", label: "交期或异常处理备注", type: "textarea", placeholder: "可写下你准备如何同步订单进度" },
+    ],
+    8: [
+      { key: "kpi", label: "要跟踪的关键指标（KPI）", type: "text", required: true, placeholder: "例如：准时交付率、利润率、复购率" },
+      { key: "nextImprovement", label: "下一单准备改进的事项", type: "textarea", required: true, placeholder: "写下一个具体、可执行的改进动作" },
+      { key: "reviewNotes", label: "额外复盘备注", type: "textarea", placeholder: "可补充客户反馈或本次订单的经验" },
+    ],
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
-    const state = TradeStart.get("roadmapProgress", { completed: [], notes: {}, quizScore: 0, supplierNotes: "" });
-    state.completed = Array.isArray(state.completed) ? state.completed.map(Number).filter((node) => node >= 1 && node <= roadmapNodes.length) : [];
-    state.notes = state.notes && typeof state.notes === "object" ? state.notes : {};
-    if (state.supplierNotes && !state.notes[2]) state.notes[2] = state.supplierNotes;
-    const migrationVersion = TradeStart.get("roadmapProgressVersion", 0);
-    if (migrationVersion < 2 && state.completed.includes(1) && !state.notes[1]) {
-      state.completed = state.completed.filter((node) => node !== 1);
-    }
-    TradeStart.set("roadmapProgressVersion", 2);
+    const rawState = TradeStart.get("roadmapProgress", { completed: [], notes: {}, answers: {}, quizScore: 0, supplierNotes: "" });
+    const state = normalizeState(rawState);
+    TradeStart.set("roadmapProgressVersion", 3);
 
     const nodes = Array.from(document.querySelectorAll("#roadmap-nodes > .cursor-pointer"));
     const progressText = document.getElementById("roadmap-progress-text");
@@ -106,8 +145,72 @@
       return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
     }
 
+    function emptyAnswer(nodeId) {
+      const answer = {};
+      (formSchemas[nodeId] || []).forEach((field) => { answer[field.key] = field.type === "checkboxes" ? [] : ""; });
+      if (nodeId === 2) answer.suppliers = [{ name: "", moq: "", unitPrice: "", notes: "" }];
+      return answer;
+    }
+
+    function hasValue(value) {
+      if (Array.isArray(value)) return value.some((item) => hasValue(item));
+      if (value && typeof value === "object") return Object.values(value).some((item) => hasValue(item));
+      return String(value ?? "").trim() !== "";
+    }
+
+    function hasAnswerContent(answer) {
+      return Boolean(answer && hasValue(answer));
+    }
+
+    function normalizeState(input) {
+      const next = input && typeof input === "object" ? { ...input } : {};
+      next.completed = Array.isArray(next.completed) ? [...new Set(next.completed.map(Number).filter((node) => node >= 1 && node <= roadmapNodes.length))] : [];
+      next.notes = next.notes && typeof next.notes === "object" ? { ...next.notes } : {};
+      next.answers = next.answers && typeof next.answers === "object" ? { ...next.answers } : {};
+      if (next.supplierNotes && !next.notes[2]) next.notes[2] = next.supplierNotes;
+
+      for (let nodeId = 1; nodeId <= roadmapNodes.length; nodeId += 1) {
+        const answer = next.answers[nodeId] && typeof next.answers[nodeId] === "object" ? { ...next.answers[nodeId] } : emptyAnswer(nodeId);
+        if (nodeId === 2) {
+          answer.suppliers = Array.isArray(answer.suppliers) && answer.suppliers.length ? answer.suppliers.map((supplier) => ({
+            name: String(supplier?.name || ""), moq: String(supplier?.moq || ""), unitPrice: String(supplier?.unitPrice || ""), notes: String(supplier?.notes || ""),
+          })) : [{ name: "", moq: "", unitPrice: "", notes: "" }];
+        }
+        if (!answer.notes && next.notes[nodeId]) answer.notes = String(next.notes[nodeId]);
+        next.answers[nodeId] = answer;
+        next.notes[nodeId] = String(answer.notes || next.notes[nodeId] || "");
+      }
+
+      // 旧版本只有一段自由文本：保留到 notes，但不再把它误判为已完成。
+      next.completed = next.completed.filter((nodeId) => getMissingFields(nodeId, next.answers[nodeId]).length === 0);
+      next.supplierNotes = next.answers[2]?.notes || next.notes[2] || "";
+      return next;
+    }
+
+    function getMissingFields(nodeId, answer) {
+      const missing = [];
+      const fields = formSchemas[nodeId] || [];
+      fields.forEach((field) => {
+        if (!field.required) return;
+        const value = answer?.[field.key];
+        if (field.type === "checkboxes" && (!Array.isArray(value) || value.length === 0)) missing.push(field.label);
+        else if (!hasValue(value)) missing.push(field.label);
+        else if (field.type === "number" && (Number.isNaN(Number(value)) || Number(value) < field.min || (field.max != null && Number(value) > field.max))) missing.push(`${field.label}（请输入 ${field.max != null ? `${field.min}—${field.max}` : `${field.min} 以上`}）`);
+      });
+      if (nodeId === 2) {
+        const suppliers = Array.isArray(answer?.suppliers) ? answer.suppliers : [];
+        const completeSuppliers = suppliers.filter((supplier) => [supplier?.name, supplier?.moq, supplier?.unitPrice].every(hasValue));
+        if (!completeSuppliers.length) missing.push("至少 1 家完整供应商（名称、MOQ、单价）");
+        suppliers.forEach((supplier, index) => {
+          if (hasValue(supplier) && ![supplier?.name, supplier?.moq, supplier?.unitPrice].every(hasValue)) missing.push(`第 ${index + 1} 家供应商信息`);
+        });
+      }
+      return missing;
+    }
+
     function save() {
-      state.supplierNotes = state.notes[2] || "";
+      state.notes = Object.fromEntries(Object.entries(state.answers).map(([nodeId, answer]) => [nodeId, String(answer?.notes || "")]));
+      state.supplierNotes = state.answers[2]?.notes || "";
       TradeStart.set("roadmapProgress", state);
       return TradeStartData.saveRoadmap(state);
     }
@@ -118,16 +221,19 @@
         const item = roadmapNodes[index];
         const completed = state.completed.includes(position);
         const active = selectedNode === position;
+        const answer = state.answers[position];
+        const statusText = completed ? "已完成" : hasAnswerContent(answer) ? `进行中 (${item.duration})` : `未开始 (${item.duration})`;
         node.className = `flex flex-row md:flex-col items-center md:items-center text-left md:text-center relative group w-full md:w-32 cursor-pointer ${active ? "" : "opacity-70 hover:opacity-100"}`;
-        node.innerHTML = `<div class="w-14 h-14 rounded-full ${completed ? "bg-primary-fixed border-primary text-primary" : active ? "bg-surface border-secondary text-secondary ring-4 ring-secondary-container/30" : "bg-surface border-border text-on-surface-variant"} border-2 flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0"><span class="${completed ? "material-symbols-outlined" : "font-headline-sm text-headline-sm"}">${completed ? "check" : position}</span></div><div class="ml-4 md:ml-0 flex-grow"><div class="font-label-caps text-label-caps ${active ? "text-secondary" : "text-on-surface-variant"} mb-1">节点 ${position}</div><h3 class="font-body-sm text-body-sm font-${active ? "bold" : "medium"} text-primary mb-1">${escapeHtml(item.title)}</h3><div class="flex items-center md:justify-center gap-1 ${completed ? "text-success" : active ? "text-secondary" : "text-on-surface-variant"}"><span class="material-symbols-outlined text-[14px]">${completed ? "check_circle" : active ? "timelapse" : "schedule"}</span><span class="font-body-sm text-[12px]">${completed ? "已完成" : state.notes[position] ? `学习中 (${item.duration})` : `未开始 (${item.duration})`}</span></div></div>`;
-        node.addEventListener("click", () => selectNode(position));
+        node.innerHTML = `<div class="w-14 h-14 rounded-full ${completed ? "bg-primary-fixed border-primary text-primary" : active ? "bg-surface border-secondary text-secondary ring-4 ring-secondary-container/30" : "bg-surface border-border text-on-surface-variant"} border-2 flex items-center justify-center mb-0 md:mb-3 z-10 shadow-sm shrink-0"><span class="${completed ? "material-symbols-outlined" : "font-headline-sm text-headline-sm"}">${completed ? "check" : position}</span></div><div class="ml-4 md:ml-0 flex-grow"><div class="font-label-caps text-label-caps ${active ? "text-secondary" : "text-on-surface-variant"} mb-1">节点 ${position}</div><h3 class="font-body-sm text-body-sm font-${active ? "bold" : "medium"} text-primary mb-1">${escapeHtml(item.title)}</h3><div class="flex items-center md:justify-center gap-1 ${completed ? "text-success" : active ? "text-secondary" : "text-on-surface-variant"}"><span class="material-symbols-outlined text-[14px]">${completed ? "check_circle" : active && hasAnswerContent(answer) ? "timelapse" : "schedule"}</span><span class="font-body-sm text-[12px]">${statusText}</span></div></div>`;
+        node.onclick = () => selectNode(position);
       });
     }
 
     function renderContent() {
       const item = roadmapNodes[selectedNode - 1];
-      const note = String(state.notes[selectedNode] || "");
+      const answer = state.answers[selectedNode] || emptyAnswer(selectedNode);
       const completed = state.completed.includes(selectedNode);
+      const missing = getMissingFields(selectedNode, answer);
       title.textContent = item.title;
       icon.textContent = item.icon;
       goal.textContent = item.goal;
@@ -136,10 +242,10 @@
       terms.innerHTML = item.terms.map(([term, explanation]) => `<div class="bg-surface p-2 rounded border border-border flex justify-between items-center"><span class="font-label-caps text-primary font-bold">${escapeHtml(term)}</span><span class="text-body-sm text-on-surface-variant">${escapeHtml(explanation)}</span></div>`).join("");
       steps.innerHTML = `<div class="absolute left-2.5 top-2 bottom-2 w-0.5 bg-border"></div>${item.steps.map((step, index) => `<div class="relative"><div class="absolute -left-[27px] w-5 h-5 rounded-full bg-surface border-2 ${index === 0 ? "border-secondary" : "border-border"} flex items-center justify-center">${index === 0 ? '<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>' : ""}</div><p class="text-body-sm text-on-surface-variant"><strong class="text-primary">${index + 1}.</strong> ${escapeHtml(step)}</p></div>`).join("")}`;
       task.textContent = item.task;
-      taskButton.textContent = note ? "编辑实践记录" : "填写实践记录";
-      completionHint.textContent = completed ? "你已完成这个节点，可以继续查看其他节点。" : note ? "已填写实践记录，现在可以标记完成。" : "填写实践记录后即可标记完成。";
+      taskButton.textContent = hasAnswerContent(answer) ? "编辑实践记录" : "填写实践记录";
       markComplete.disabled = completed;
-      markComplete.innerHTML = `<span class="material-symbols-outlined text-[18px]">${completed ? "check_circle" : "check_circle"}</span> ${completed ? "已完成本节点" : "标记完成"}`;
+      completionHint.textContent = completed ? "你已完成这个节点，可以继续查看其他节点。" : missing.length ? (hasAnswerContent(answer) ? `已填写部分内容，还差：${missing.slice(0, 2).join("、")}${missing.length > 2 ? "等" : ""}。` : "填写全部必填项后即可标记完成。") : "必填项已完成，现在可以标记节点完成。";
+      markComplete.innerHTML = `<span class="material-symbols-outlined text-[18px]">check_circle</span> ${completed ? "已完成本节点" : "标记完成"}`;
       markComplete.classList.toggle("opacity-70", completed);
       markComplete.classList.toggle("cursor-not-allowed", completed);
     }
@@ -160,17 +266,87 @@
       document.querySelector("section.bg-surface.rounded-xl")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
+    const inputStyle = "box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#102a43;font-size:14px;outline:none";
+    const labelStyle = "display:block;font-size:14px;font-weight:600;color:#102a43;margin-bottom:6px";
+    const fieldStyle = "margin-bottom:16px";
+
+    function renderField(field, value) {
+      const requiredMark = field.required ? '<span style="color:#d64545"> *</span>' : "";
+      const label = `<label style="${labelStyle}">${escapeHtml(field.label)}${requiredMark}</label>`;
+      if (field.type === "textarea") return `<div style="${fieldStyle}">${label}<textarea data-field="${escapeHtml(field.key)}" rows="3" style="${inputStyle};resize:vertical" placeholder="${escapeHtml(field.placeholder || "")}">${escapeHtml(value || "")}</textarea></div>`;
+      if (field.type === "select") return `<div style="${fieldStyle}">${label}<select data-field="${escapeHtml(field.key)}" style="${inputStyle}"><option value="">${escapeHtml(field.placeholder || "请选择")}</option>${field.options.map((option) => `<option value="${escapeHtml(option)}" ${String(value || "") === option ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}</select></div>`;
+      if (field.type === "checkboxes") return `<fieldset data-fieldset="${escapeHtml(field.key)}" style="${fieldStyle};border:0;padding:0;margin-left:0"><legend style="${labelStyle}">${escapeHtml(field.label)}${requiredMark}</legend><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">${field.options.map((option) => `<label style="display:flex;align-items:center;gap:7px;font-size:14px;color:#243b53"><input type="checkbox" value="${escapeHtml(option)}" ${(Array.isArray(value) && value.includes(option)) ? "checked" : ""}>${escapeHtml(option)}</label>`).join("")}</div></fieldset>`;
+      const numberAttrs = field.type === "number" ? `type="number" min="${field.min}" max="${field.max}" step="0.01"` : 'type="text"';
+      return `<div style="${fieldStyle}">${label}<div style="position:relative"><input data-field="${escapeHtml(field.key)}" ${numberAttrs} value="${escapeHtml(value || "")}" style="${inputStyle};padding-right:${field.suffix ? "90px" : "12px"}" placeholder="${escapeHtml(field.placeholder || "")}">${field.suffix ? `<span style="position:absolute;right:12px;top:10px;color:#829ab1;font-size:13px">${escapeHtml(field.suffix)}</span>` : ""}</div></div>`;
+    }
+
+    function renderSupplierRows(container, suppliers) {
+      const rows = Array.isArray(suppliers) && suppliers.length ? suppliers : [{ name: "", moq: "", unitPrice: "", notes: "" }];
+      container.innerHTML = rows.map((supplier, index) => `<div data-supplier-row style="border:1px solid #d9e2ec;border-radius:10px;padding:12px;margin-bottom:10px;background:#f8fafc"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><strong style="font-size:14px;color:#102a43">供应商 ${index + 1}</strong><button type="button" data-remove-supplier="${index}" style="border:0;background:transparent;color:#829ab1;cursor:pointer;font-size:13px">${rows.length > 1 ? "删除" : "清空"}</button></div><div style="display:grid;grid-template-columns:1.3fr .8fr .8fr;gap:8px"><input data-supplier="name" value="${escapeHtml(supplier?.name || "")}" style="${inputStyle}" placeholder="供应商名称"><input data-supplier="moq" value="${escapeHtml(supplier?.moq || "")}" type="number" min="0" step="1" style="${inputStyle}" placeholder="MOQ"><input data-supplier="unitPrice" value="${escapeHtml(supplier?.unitPrice || "")}" type="number" min="0" step="0.01" style="${inputStyle}" placeholder="单价（USD）"></div><input data-supplier="notes" value="${escapeHtml(supplier?.notes || "")}" style="${inputStyle};margin-top:8px" placeholder="可选：交期、样品或定制备注"></div>`).join("");
+    }
+
+    function readForm(dialog, nodeId) {
+      const answer = emptyAnswer(nodeId);
+      (formSchemas[nodeId] || []).forEach((field) => {
+        if (field.type === "checkboxes") answer[field.key] = Array.from(dialog.querySelectorAll(`[data-fieldset="${field.key}"] input:checked`)).map((input) => input.value);
+        else answer[field.key] = String(dialog.querySelector(`[data-field="${field.key}"]`)?.value || "").trim();
+      });
+      if (nodeId === 2) {
+        answer.category = String(dialog.querySelector('[data-field="category"]')?.value || "").trim();
+        answer.suppliers = Array.from(dialog.querySelectorAll("[data-supplier-row]")).map((row) => ({
+          name: String(row.querySelector('[data-supplier="name"]')?.value || "").trim(),
+          moq: String(row.querySelector('[data-supplier="moq"]')?.value || "").trim(),
+          unitPrice: String(row.querySelector('[data-supplier="unitPrice"]')?.value || "").trim(),
+          notes: String(row.querySelector('[data-supplier="notes"]')?.value || "").trim(),
+        }));
+      }
+      return answer;
+    }
+
     function openTaskDialog() {
       const item = roadmapNodes[selectedNode - 1];
+      const answer = state.answers[selectedNode] || emptyAnswer(selectedNode);
       const dialog = document.createElement("dialog");
-      dialog.style.cssText = "width:min(560px,calc(100% - 32px));border:0;border-radius:16px;padding:0;box-shadow:0 24px 80px rgba(16,42,67,.25)";
-      dialog.innerHTML = `<form method="dialog" style="padding:24px;font-family:'Noto Sans SC',sans-serif;color:#102a43"><h2 style="font-size:22px;font-weight:700;margin:0 0 8px">节点 ${selectedNode} 实践记录</h2><p style="margin:0 0 16px;color:#627d98;font-size:14px">${escapeHtml(item.task)}</p><textarea data-note rows="7" style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;resize:vertical" placeholder="写下你的结论、数据或下一步行动">${escapeHtml(state.notes[selectedNode] || "")}</textarea><div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px"><button value="cancel" type="button" data-cancel style="padding:10px 18px;border:1px solid #cbd5e1;border-radius:8px;background:#fff">取消</button><button value="confirm" type="submit" style="padding:10px 18px;border:0;border-radius:8px;background:#006a63;color:#fff;font-weight:600">保存记录</button></div></form>`;
+      dialog.style.cssText = "width:min(680px,calc(100% - 32px));max-height:calc(100vh - 40px);border:0;border-radius:16px;padding:0;box-shadow:0 24px 80px rgba(16,42,67,.25);color:#102a43";
+      const fields = (formSchemas[selectedNode] || []).map((field) => renderField(field, answer[field.key])).join("");
+      const supplierBlock = selectedNode === 2 ? `<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><label style="${labelStyle};margin:0">候选供应商 <span style="color:#d64545">*</span></label><button type="button" data-add-supplier style="border:1px solid #9fb3c8;border-radius:7px;padding:6px 10px;background:#fff;color:#006a63;cursor:pointer;font-size:13px">＋ 添加供应商</button></div><p style="font-size:12px;color:#627d98;margin:0 0 10px">至少填写 1 家，最多添加 3 家；每家需要名称、MOQ 和单价。</p><div data-suppliers></div></div>` : "";
+      dialog.innerHTML = `<form method="dialog" data-roadmap-form style="padding:24px;max-height:calc(100vh - 40px);overflow:auto;font-family:'Noto Sans SC',sans-serif"><div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:8px"><div><h2 style="font-size:22px;font-weight:700;margin:0 0 8px">节点 ${selectedNode} 实践记录</h2><p style="margin:0 0 18px;color:#627d98;font-size:14px;line-height:1.6">${escapeHtml(item.task)}</p></div><button type="button" data-cancel aria-label="关闭" style="border:0;background:transparent;color:#627d98;font-size:25px;line-height:1;cursor:pointer">×</button></div>${selectedNode === 2 ? renderField(formSchemas[2][0], answer.category) : ""}${supplierBlock}${selectedNode === 2 ? renderField(formSchemas[2][1], answer.notes) : fields}<div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid #e5e7eb"><button value="cancel" type="button" data-cancel-secondary style="padding:10px 18px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#243b53;cursor:pointer">取消</button><button value="confirm" type="submit" style="padding:10px 18px;border:0;border-radius:8px;background:#006a63;color:#fff;font-weight:600;cursor:pointer">保存记录</button></div></form>`;
       document.body.appendChild(dialog);
-      dialog.querySelector("[data-cancel]").addEventListener("click", () => dialog.close("cancel"));
+      if (selectedNode === 2) {
+        const suppliers = dialog.querySelector("[data-suppliers]");
+        renderSupplierRows(suppliers, answer.suppliers);
+        dialog.querySelector("[data-add-supplier]").addEventListener("click", () => {
+          const current = Array.from(dialog.querySelectorAll("[data-supplier-row]")).map((row) => ({
+            name: row.querySelector('[data-supplier="name"]')?.value || "", moq: row.querySelector('[data-supplier="moq"]')?.value || "", unitPrice: row.querySelector('[data-supplier="unitPrice"]')?.value || "", notes: row.querySelector('[data-supplier="notes"]')?.value || "",
+          }));
+          if (current.length >= 3) { TradeStart.toast("最多添加 3 家供应商", "warning"); return; }
+          current.push({ name: "", moq: "", unitPrice: "", notes: "" });
+          renderSupplierRows(suppliers, current);
+          bindSupplierRemove();
+        });
+        function bindSupplierRemove() {
+          dialog.querySelectorAll("[data-remove-supplier]").forEach((button) => {
+            button.onclick = () => {
+              const rows = Array.from(dialog.querySelectorAll("[data-supplier-row]")).map((row) => ({
+                name: row.querySelector('[data-supplier="name"]')?.value || "", moq: row.querySelector('[data-supplier="moq"]')?.value || "", unitPrice: row.querySelector('[data-supplier="unitPrice"]')?.value || "", notes: row.querySelector('[data-supplier="notes"]')?.value || "",
+              }));
+              if (rows.length === 1) rows[0] = { name: "", moq: "", unitPrice: "", notes: "" };
+              else rows.splice(Number(button.dataset.removeSupplier), 1);
+              renderSupplierRows(suppliers, rows);
+              bindSupplierRemove();
+            };
+          });
+        }
+        bindSupplierRemove();
+      }
+      dialog.querySelectorAll("[data-cancel], [data-cancel-secondary]").forEach((button) => button.addEventListener("click", () => dialog.close("cancel")));
       dialog.addEventListener("close", () => dialog.remove());
       dialog.querySelector("form").addEventListener("submit", async (event) => {
         event.preventDefault();
-        state.notes[selectedNode] = dialog.querySelector("[data-note]").value.trim();
+        const nextAnswer = readForm(dialog, selectedNode);
+        state.answers[selectedNode] = nextAnswer;
+        state.notes[selectedNode] = String(nextAnswer.notes || "");
+        if (getMissingFields(selectedNode, nextAnswer).length && state.completed.includes(selectedNode)) state.completed = state.completed.filter((node) => node !== selectedNode);
         try { await save(); TradeStart.toast("实践记录已保存"); } catch (error) { console.warn("路线图记录保存失败", error); TradeStart.toast("记录已保存在当前浏览器", "warning"); }
         render();
         dialog.close("confirm");
@@ -180,7 +356,8 @@
 
     taskButton.addEventListener("click", openTaskDialog);
     markComplete.addEventListener("click", async () => {
-      if (!String(state.notes[selectedNode] || "").trim()) { TradeStart.toast("请先填写实践记录", "warning"); return; }
+      const missing = getMissingFields(selectedNode, state.answers[selectedNode]);
+      if (missing.length) { TradeStart.toast(`请先填写：${missing.slice(0, 2).join("、")}${missing.length > 2 ? "等必填项" : ""}`, "warning"); return; }
       if (!state.completed.includes(selectedNode)) state.completed.push(selectedNode);
       try { await save(); TradeStart.toast(`节点 ${selectedNode} 已完成，进度已保存`); } catch (error) { console.warn("学习进度保存失败", error); TradeStart.toast(`节点 ${selectedNode} 已完成，已保存在当前浏览器`, "warning"); }
       render();

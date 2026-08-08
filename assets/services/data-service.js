@@ -26,6 +26,12 @@
     localStorage.setItem(prefix + key, JSON.stringify(value));
   }
 
+  function hasMeaningfulValue(value) {
+    if (Array.isArray(value)) return value.some(hasMeaningfulValue);
+    if (value && typeof value === "object") return Object.values(value).some(hasMeaningfulValue);
+    return String(value ?? "").trim() !== "";
+  }
+
   function clientOrThrow() {
     const client = window.TradeStartBackend?.getClient();
     if (!client) throw new Error("后端尚未配置");
@@ -95,17 +101,23 @@
     const modules = await publishedModules();
     const completed = new Set(state.completed || []);
     const notes = state.notes && typeof state.notes === "object" ? state.notes : {};
+    const answers = state.answers && typeof state.answers === "object" ? state.answers : {};
     const now = new Date().toISOString();
     const rows = modules.map((module) => {
       const position = Number(module.sort_order);
-      const note = String(notes[position] || (position === 2 ? state.supplierNotes || "" : ""));
-      const status = completed.has(position) ? "completed" : note ? "in_progress" : "not_started";
+      const answer = answers[position] && typeof answers[position] === "object" ? answers[position] : {};
+      const note = String(answer.notes || notes[position] || (position === 2 ? state.supplierNotes || "" : ""));
+      const hasAnswer = hasMeaningfulValue(answer);
+      const status = completed.has(position) ? "completed" : hasAnswer || note ? "in_progress" : "not_started";
+      const taskJson = {};
+      if (Object.keys(answer).length) taskJson.answers = answer;
+      if (note) taskJson.note = note;
       return {
         user_id: user.id,
         module_id: module.id,
         status,
         score: null,
-        task_json: note ? { note } : {},
+        task_json: taskJson,
         completed_at: status === "completed" ? now : null,
       };
     });
@@ -198,9 +210,13 @@
     const notes = Object.fromEntries(data
       .map((row) => [positionById.get(row.module_id), row.task_json?.note || row.task_json?.supplierNotes || ""])
       .filter(([position, note]) => position && note));
+    const answers = Object.fromEntries(data
+      .map((row) => [positionById.get(row.module_id), row.task_json?.answers])
+      .filter(([position, answer]) => position && answer && typeof answer === "object"));
     return {
       completed: data.filter((row) => row.status === "completed").map((row) => positionById.get(row.module_id)).filter(Boolean),
       notes,
+      answers,
       quizScore: 0,
       supplierNotes: notes[2] || "",
     };
