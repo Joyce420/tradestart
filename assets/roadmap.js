@@ -12,6 +12,13 @@
         { title: "用三个问题做选择", body: "你是否有稳定供应链？能否接受主动找客户？是否愿意处理单件发货、广告和退货？前两个更偏向 B2B，后一个更偏向跨境电商。", action: "资金有限、没有品牌、想先验证大订单时，建议先选 B2B 出口。" },
         { title: "把选择写成一句话", body: "不要只写“我选 B2B”。请写清楚客户是谁、你为什么选它，以及你准备先做什么。", action: "例如：我先做 B2B，因为我能找到工厂，也愿意主动联系美国批发商。" },
       ],
+      decision: {
+        questions: [
+          { key: "order", title: "你更希望先做哪种订单？", options: [["b2b", "一次卖 100—1000 件给企业或批发商"], ["ecommerce", "一件一件卖给海外消费者"]] },
+          { key: "work", title: "你更愿意投入哪类工作？", options: [["b2b", "找客户、报价、寄样、谈大订单"], ["ecommerce", "运营店铺、做内容 / 广告、处理单件售后"]] },
+          { key: "readiness", title: "你现在的准备更接近哪一种？", options: [["b2b", "先从供应商和少量潜在企业客户开始验证"], ["ecommerce", "已准备好店铺、商品页和持续的运营预算"]] },
+        ],
+      },
       outcome: "完成后你应该得到：一条明确路线（B2B 或跨境电商）和一个能解释清楚的选择理由。",
       task: "先看两个真实场景，再在实践记录中选择路线并写下理由。",
     },
@@ -294,12 +301,13 @@
       knowledge.innerHTML = item.knowledge.map(([label, text]) => `<li class="flex items-start gap-2"><span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">check_circle</span><div><strong>${escapeHtml(label)}：</strong>${escapeHtml(text)}</div></li>`).join("");
       terms.innerHTML = item.terms.map(([term, explanation]) => `<div class="bg-surface p-2 rounded border border-border flex justify-between items-center"><span class="font-label-caps text-primary font-bold">${escapeHtml(term)}</span><span class="text-body-sm text-on-surface-variant">${escapeHtml(explanation)}</span></div>`).join("");
       const playbook = item.playbook || item.steps.map((step) => ({ title: step, body: "按这一步完成你的实践记录。" }));
+      const decisionTool = item.decision ? `<div class="relative mt-2 rounded-lg border border-secondary/30 bg-primary-fixed/35 p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-secondary text-[18px]">alt_route</span><h4 class="font-body-sm font-bold text-primary mb-2">还不知道选哪个？用 3 个问题做判断</h4><p class="text-[13px] leading-5 text-on-surface-variant mb-4">这不是考试。选更接近你当前情况的答案，系统会给出第一步建议。</p>${item.decision.questions.map((question) => `<fieldset class="mb-3 border-0 p-0"><legend class="mb-2 text-[13px] font-bold text-primary">${escapeHtml(question.title)}</legend><div class="grid gap-2 md:grid-cols-2">${question.options.map(([value, label]) => `<label class="flex cursor-pointer items-start gap-2 rounded-md border border-border bg-surface px-3 py-2 text-[13px] leading-5 text-on-surface-variant hover:border-secondary"><input class="mt-1" type="radio" name="decision-${escapeHtml(question.key)}" value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span></label>`).join("")}</div></fieldset>`).join("")}<button type="button" data-run-decision class="mt-1 rounded bg-secondary px-3 py-2 text-[13px] font-bold text-on-secondary hover:bg-secondary/90">查看我的建议</button><div data-decision-result class="hidden mt-3 rounded-md border border-secondary/25 bg-surface p-3" aria-live="polite"></div></div>` : "";
       steps.innerHTML = `<div class="absolute left-2.5 top-2 bottom-2 w-0.5 bg-border"></div>${playbook.map((step, index) => {
         const links = (step.links || []).map(([label, href]) => `<a class="inline-flex items-center gap-1 text-secondary hover:underline" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined text-[14px]">open_in_new</span>${escapeHtml(label)}</a>`).join("<span class=\"text-outline-variant\">·</span>");
         const searches = step.searches?.length ? `<div class="mt-3 flex flex-wrap items-center gap-2"><span class="text-[12px] font-bold text-primary">可以直接搜索：</span>${step.searches.map((term) => `<span class="rounded-full bg-surface px-2.5 py-1 text-[12px] text-on-surface-variant border border-border">${escapeHtml(term)}</span>`).join("")}</div>` : "";
         const template = step.template ? `<div class="mt-3 rounded-md border border-secondary/20 bg-surface p-3"><div class="flex items-center justify-between gap-2 mb-2"><span class="text-[12px] font-bold text-primary">可复制模板</span><button type="button" data-copy-template="${escapeHtml(step.template)}" class="rounded border border-border bg-surface px-2 py-1 text-[12px] text-secondary hover:bg-surface-container-low">复制</button></div><p class="m-0 whitespace-pre-line text-[13px] leading-6 text-on-surface-variant">${escapeHtml(step.template)}</p></div>` : "";
         return `<div class="relative"><div class="absolute -left-[27px] w-5 h-5 rounded-full bg-surface border-2 ${index === 0 ? "border-secondary" : "border-border"} flex items-center justify-center">${index === 0 ? '<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>' : ""}</div><div class="rounded-lg border border-border bg-surface-bright p-4"><h4 class="font-body-sm font-bold text-primary mb-2">${index + 1}. ${escapeHtml(step.title)}</h4><p class="text-body-sm leading-6 text-on-surface-variant mb-2">${escapeHtml(step.body)}</p>${step.action ? `<div class="rounded-md bg-primary-fixed/50 px-3 py-2 text-[13px] leading-5 text-on-primary-fixed-variant"><strong class="text-primary">现在做：</strong>${escapeHtml(step.action)}</div>` : ""}${searches}${links ? `<div class="mt-3 flex flex-wrap items-center gap-2 text-[13px]"><span class="font-bold text-primary">打开工具：</span>${links}</div>` : ""}${template}</div></div>`;
-      }).join("")}${item.outcome ? `<div class="relative mt-2 rounded-lg border border-secondary/30 bg-secondary/5 p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-secondary text-[18px]">flag</span><p class="m-0 text-body-sm leading-6 text-primary"><strong>完成成果：</strong>${escapeHtml(item.outcome.replace(/^完成后你应该得到：/, ""))}</p></div>` : ""}`;
+      }).join("")}${decisionTool}${item.outcome ? `<div class="relative mt-2 rounded-lg border border-secondary/30 bg-secondary/5 p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-secondary text-[18px]">flag</span><p class="m-0 text-body-sm leading-6 text-primary"><strong>完成成果：</strong>${escapeHtml(item.outcome.replace(/^完成后你应该得到：/, ""))}</p></div>` : ""}`;
       steps.querySelectorAll("[data-copy-template]").forEach((button) => {
         button.addEventListener("click", async () => {
           try {
@@ -309,6 +317,23 @@
             TradeStart.toast("复制失败，请手动选择模板文字", "warning");
           }
         });
+      });
+      steps.querySelector("[data-run-decision]")?.addEventListener("click", () => {
+        const selected = item.decision.questions.map((question) => steps.querySelector(`input[name="decision-${question.key}"]:checked`)?.value || "");
+        const result = steps.querySelector("[data-decision-result]");
+        if (selected.some((value) => !value)) {
+          result.classList.remove("hidden");
+          result.innerHTML = '<p class="m-0 text-[13px] text-error">请先回答完 3 个问题，再查看建议。</p>';
+          return;
+        }
+        const b2bScore = selected.filter((value) => value === "b2b").length;
+        const mode = b2bScore >= 2 ? "B2B 出口" : "跨境电商";
+        const explanation = mode === "B2B 出口"
+          ? "你的选择更接近“先用供应商和企业客户验证一笔订单”。这条路不要求你立刻运营店铺或投广告。"
+          : "你的选择更接近“直接面向消费者经营店铺”。你需要准备商品页、内容或广告，以及单件履约和售后。";
+        result.classList.remove("hidden");
+        result.innerHTML = `<p class="m-0 text-[13px] leading-5 text-on-surface-variant"><strong class="text-primary">建议先从：${escapeHtml(mode)}</strong><br>${escapeHtml(explanation)}</p><button type="button" data-apply-decision class="mt-3 rounded border border-secondary bg-surface px-3 py-2 text-[13px] font-bold text-secondary hover:bg-primary-fixed">用这个建议填写实践记录</button>`;
+        result.querySelector("[data-apply-decision]").addEventListener("click", () => openTaskDialog({ businessMode: mode }));
       });
       task.textContent = item.task;
       taskButton.textContent = hasAnswerContent(answer) ? "编辑实践记录" : "填写实践记录";
@@ -372,9 +397,9 @@
       return answer;
     }
 
-    function openTaskDialog() {
+    function openTaskDialog(prefill = {}) {
       const item = roadmapNodes[selectedNode - 1];
-      const answer = state.answers[selectedNode] || emptyAnswer(selectedNode);
+      const answer = { ...(state.answers[selectedNode] || emptyAnswer(selectedNode)), ...prefill };
       const dialog = document.createElement("dialog");
       dialog.style.cssText = "width:min(680px,calc(100% - 32px));max-height:calc(100vh - 40px);border:0;border-radius:16px;padding:0;box-shadow:0 24px 80px rgba(16,42,67,.25);color:#102a43";
       const fields = (formSchemas[selectedNode] || []).map((field) => renderField(field, answer[field.key])).join("");
@@ -426,7 +451,7 @@
       dialog.showModal();
     }
 
-    taskButton.addEventListener("click", openTaskDialog);
+    taskButton.addEventListener("click", () => openTaskDialog());
     markComplete.addEventListener("click", async () => {
       const missing = getMissingFields(selectedNode, state.answers[selectedNode]);
       if (missing.length) { TradeStart.toast(`请先填写：${missing.slice(0, 2).join("、")}${missing.length > 2 ? "等必填项" : ""}`, "warning"); return; }
