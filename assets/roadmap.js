@@ -12,6 +12,7 @@
         { title: "用三个问题做选择", body: "你是否有稳定供应链？能否接受主动找客户？是否愿意处理单件发货、广告和退货？前两个更偏向 B2B，后一个更偏向跨境电商。", action: "资金有限、没有品牌、想先验证大订单时，建议先选 B2B 出口。" },
         { title: "把选择写成一句话", body: "不要只写“我选 B2B”。请写清楚客户是谁、你为什么选它，以及你准备先做什么。", action: "例如：我先做 B2B，因为我能找到工厂，也愿意主动联系美国批发商。" },
       ],
+      scopeNotice: "TradeStart V1 的完整实操案例以 B2B 出口为主：后续会练习找供应商、找企业客户、报价、PI 和货代。跨境电商的店铺运营、广告、FBA / 平台履约会在独立路线中补充；本页的判断器会如实告诉你更适合哪种模式。",
       decision: {
         questions: [
           { key: "order", title: "你更希望先做哪种订单？", options: [["b2b", "一次卖 100—1000 件给企业或批发商"], ["ecommerce", "一件一件卖给海外消费者"]] },
@@ -30,14 +31,14 @@
       steps: ["基于自身资源或兴趣，划定 2—3 个初步品类", "在 Alibaba、1688 等平台筛选供应商", "获取阶梯报价并记录 MOQ、交期和样品信息"],
       example: "先用普通不锈钢保温杯做练习，比带电池、App 或复杂认证的智能产品更适合新手验证流程。",
       playbook: [
-        { title: "去这四个地方找候选商品", body: "1688 看国内货源和采购价；Alibaba 看出口型供应商；Amazon 看海外正在卖什么；Google Trends 看搜索需求趋势。今天不用定终身赛道，只找 3 个候选商品。", action: "打开 1688、Alibaba 或 Amazon，分别记下 3 个你愿意进一步研究的商品。", links: [["打开 1688", "https://www.1688.com/"], ["打开 Alibaba", "https://www.alibaba.com/"], ["打开 Google Trends", "https://trends.google.com/trends/"]], searches: ["保温杯", "运动水壶", "insulated water bottle manufacturer"] },
-        { title: "用新手筛选器淘汰一半产品", body: "优先选择小、轻、不易碎、不带电、不过期、供应商多、能做出一点差异化的商品。电池、食品、化妆品、医疗、超大件和易碎品先放到后面。", action: "给 3 个候选商品各打勾：体积小吗？不带电吗？容易寄样吗？至少保留 1 个。" },
-        { title: "用准确关键词找供应商", body: "不要只搜“批发”。在 1688 搜“保温杯 源头工厂”，在 Alibaba 搜“insulated water bottle manufacturer”。先打开 5 家供应商页面，记录工厂类型、MOQ、起订价和是否支持定制。", action: "从 5 家中留下 3 家，不要因为最低价就直接下单。", searches: ["保温杯 源头工厂", "保温杯 定制 logo", "insulated water bottle manufacturer"] },
-        { title: "复制这段话询价", body: "联系供应商不是只问“How much?”，要一次问清数量、阶梯价、样品、包装和交期。", action: "复制下面的询价内容发给至少 3 家供应商。", template: "你好，我想采购不锈钢保温杯出口到美国。请提供 100/500/1000 件的阶梯报价、MOQ、样品费和样品寄出时间；另外请告知是否支持印 Logo、包装方式、生产周期，以及 EXW 和 FOB 价格。谢谢。" },
+        { title: "去这四个地方找候选商品", body: "1688 看国内货源和采购价；Alibaba 看出口型供应商；Amazon 看海外正在卖什么；Google Trends 看搜索需求趋势。今天不用定终身赛道，只找 2—3 个候选商品。", action: "打开 1688、Alibaba 或 Amazon，分别记下 2—3 个你愿意进一步研究的商品。", links: [["打开 1688", "https://www.1688.com/"], ["打开 Alibaba", "https://www.alibaba.com/"], ["打开 Amazon", "https://www.amazon.com/"], ["打开 Google Trends", "https://trends.google.com/trends/"]], searches: ["保温杯", "运动水壶", "insulated water bottle manufacturer"] },
+        { title: "用新手筛选器淘汰一半产品", body: "优先选择小、轻、不易碎、不带电、不过期、供应商多、能做出一点差异化的商品。电池、食品、化妆品、医疗、超大件和易碎品先放到后面。", action: "给 2—3 个候选商品各打勾：体积小吗？不带电吗？容易寄样吗？确定 1 个主推商品。" },
+        { title: "用准确关键词找供应商", body: "不要只搜“批发”。在 1688 搜“保温杯 源头工厂”，在 Alibaba 搜“insulated water bottle manufacturer”。先打开 5 家供应商页面，记录工厂类型、MOQ、起订价和是否支持定制。", action: "至少认真比较 2 家，第三家作为推荐对照；不要因为最低价就直接下单。", searches: ["保温杯 源头工厂", "保温杯 定制 logo", "insulated water bottle manufacturer"] },
+        { title: "复制这段话询价", body: "联系供应商不是只问“How much?”，要一次问清数量、阶梯价、样品、包装和交期。", action: "复制下面的询价内容，优先发给你选出的 2 家供应商。", template: "你好，我想采购不锈钢保温杯出口到美国。请提供 100/500/1000 件的阶梯报价、MOQ、样品费和样品寄出时间；另外请告知是否支持印 Logo、包装方式、生产周期，以及 EXW 和 FOB 价格。谢谢。" },
         { title: "先拿样，再决定小批量", body: "样品是为了验证质量，不是走过场。检查材质、尺寸、密封防漏、保温效果、包装、Logo 和实物是否与描述一致。样品合格后再谈小批量试单。", action: "在实践记录中写下 1 家首选供应商、MOQ、单价和你要验证的问题。" },
       ],
-      outcome: "完成后你应该得到：3 个候选商品、3 家候选供应商、1 段已准备好的询价内容，以及一个下一步拿样计划。",
-      task: "按上面的 5 步操作，先列 3 个候选商品，再记录至少 1 家供应商、MOQ、单价和你最关心的问题。",
+      outcome: "完成后你应该得到：2—3 个候选商品、1 个主推商品、至少 2 家可比较的供应商、1 段已准备好的询价内容，以及一个下一步拿样计划。",
+      task: "按上面的 5 步操作，列出 2—3 个候选商品，确定 1 个主推商品，再记录至少 2 家供应商的 MOQ、单价和你最关心的问题。",
     },
     {
       title: "研究目标市场", icon: "public", duration: "15分钟",
@@ -52,8 +53,8 @@
         { title: "从评论和差评找需求", body: "打开竞品页面，重点看 3—4 星评论和差评，记录客户反复提到的问题。客户愿意付钱解决的问题，才是有效需求。", action: "记录至少 3 条证据，例如防漏、保温时间、容量、可定制 Logo。" },
         { title: "形成一张市场结论卡", body: "把国家、客户和需求放在一起，避免只写抽象的市场结论。", action: "例如：目标国家美国；客户是户外用品批发商；核心需求是防漏、耐用、可定制。" },
       ],
-      outcome: "完成后你应该得到：一个目标国家、一类具体客户和至少 3 条来自搜索或评论的需求证据。",
-      task: "按步骤比较国家、客户和评论，记录目标国家、目标客户画像和一个已验证的购买需求。",
+      outcome: "完成后你应该得到：一个目标国家、一类具体客户、3 条来自搜索或评论的需求证据，以及一个明确的优先卖点。",
+      task: "按步骤比较国家、客户和评论，记录目标国家、目标客户画像、3 条需求证据和你的市场结论。",
     },
     {
       title: "选择获客渠道", icon: "campaign", duration: "12分钟",
@@ -140,15 +141,15 @@
       { key: "notes", label: "额外备注", type: "textarea", placeholder: "可补充你的资源、预算或顾虑" },
     ],
     2: [
-      { key: "category", label: "核心品类", type: "text", required: true, placeholder: "例如：智能保温杯" },
-      { key: "candidateProducts", label: "候选商品清单（建议写 3 个）", type: "textarea", placeholder: "例如：普通不锈钢保温杯、运动水壶、企业礼品杯" },
+      { key: "category", label: "确定的主推商品", type: "text", required: true, placeholder: "例如：不锈钢保温杯" },
+      { key: "candidateProducts", label: "候选商品（至少 2 个，每行一个）", type: "textarea", required: true, placeholder: "普通不锈钢保温杯\n运动水壶\n企业礼品杯" },
       { key: "notes", label: "最关心的问题 / 额外备注", type: "textarea", placeholder: "例如：想确认供应商的定制能力和样品费用" },
     ],
     3: [
       { key: "targetMarket", label: "目标国家或区域", type: "text", required: true, placeholder: "例如：美国西海岸" },
       { key: "customerProfile", label: "目标客户画像", type: "textarea", required: true, placeholder: "一句话描述客户是谁、在什么场景使用" },
-      { key: "verifiedDemand", label: "已验证的购买需求", type: "textarea", required: true, placeholder: "写下你从搜索、评论或询盘中看到的需求" },
-      { key: "evidence", label: "证据来源 / 额外备注", type: "textarea", placeholder: "可填写平台链接、评论关键词或调研备注" },
+      { key: "marketConclusion", label: "我的市场结论 / 优先卖点", type: "textarea", required: true, placeholder: "例如：防漏是优先卖点，应重点询问供应商的密封测试能力" },
+      { key: "notes", label: "额外调研备注", type: "textarea", placeholder: "可补充竞品链接、价格区间或暂时未解决的问题" },
     ],
     4: [
       { key: "leadChannel", label: "主获客渠道", type: "select", required: true, options: ["B2B 平台", "主动开发", "内容获客", "展会 / 行业社群"], placeholder: "请选择主渠道" },
@@ -208,7 +209,8 @@
     function emptyAnswer(nodeId) {
       const answer = {};
       (formSchemas[nodeId] || []).forEach((field) => { answer[field.key] = field.type === "checkboxes" ? [] : ""; });
-      if (nodeId === 2) answer.suppliers = [{ name: "", moq: "", unitPrice: "", notes: "" }];
+      if (nodeId === 2) answer.suppliers = [{ name: "", moq: "", unitPrice: "", notes: "" }, { name: "", moq: "", unitPrice: "", notes: "" }];
+      if (nodeId === 3) answer.evidences = [{ source: "", finding: "" }, { source: "", finding: "" }, { source: "", finding: "" }];
       return answer;
     }
 
@@ -234,7 +236,18 @@
         if (nodeId === 2) {
           answer.suppliers = Array.isArray(answer.suppliers) && answer.suppliers.length ? answer.suppliers.map((supplier) => ({
             name: String(supplier?.name || ""), moq: String(supplier?.moq || ""), unitPrice: String(supplier?.unitPrice || ""), notes: String(supplier?.notes || ""),
-          })) : [{ name: "", moq: "", unitPrice: "", notes: "" }];
+          })) : [{ name: "", moq: "", unitPrice: "", notes: "" }, { name: "", moq: "", unitPrice: "", notes: "" }];
+        }
+        if (nodeId === 3) {
+          if (!answer.marketConclusion && answer.verifiedDemand) answer.marketConclusion = String(answer.verifiedDemand);
+          const existingEvidences = Array.isArray(answer.evidences) ? answer.evidences : [];
+          const legacyEvidence = (!existingEvidences.length && (answer.evidence || answer.verifiedDemand))
+            ? [{ source: String(answer.evidence || "旧版记录"), finding: String(answer.verifiedDemand || "") }]
+            : [];
+          answer.evidences = [...existingEvidences, ...legacyEvidence].slice(0, 3).map((evidence) => ({
+            source: String(evidence?.source || ""), finding: String(evidence?.finding || ""),
+          }));
+          while (answer.evidences.length < 3) answer.evidences.push({ source: "", finding: "" });
         }
         if (!answer.notes && next.notes[nodeId]) answer.notes = String(next.notes[nodeId]);
         next.answers[nodeId] = answer;
@@ -258,11 +271,21 @@
         else if (field.type === "number" && (Number.isNaN(Number(value)) || Number(value) < field.min || (field.max != null && Number(value) > field.max))) missing.push(`${field.label}（请输入 ${field.max != null ? `${field.min}—${field.max}` : `${field.min} 以上`}）`);
       });
       if (nodeId === 2) {
+        const candidateProducts = String(answer?.candidateProducts || "").split(/[\n,，；;]/).map((item) => item.trim()).filter(Boolean);
+        if (candidateProducts.length < 2) missing.push("至少 2 个候选商品（每行一个）");
         const suppliers = Array.isArray(answer?.suppliers) ? answer.suppliers : [];
         const completeSuppliers = suppliers.filter((supplier) => [supplier?.name, supplier?.moq, supplier?.unitPrice].every(hasValue));
-        if (!completeSuppliers.length) missing.push("至少 1 家完整供应商（名称、MOQ、单价）");
+        if (completeSuppliers.length < 2) missing.push("至少 2 家完整供应商（名称、MOQ、单价）");
         suppliers.forEach((supplier, index) => {
           if (hasValue(supplier) && ![supplier?.name, supplier?.moq, supplier?.unitPrice].every(hasValue)) missing.push(`第 ${index + 1} 家供应商信息`);
+        });
+      }
+      if (nodeId === 3) {
+        const evidences = Array.isArray(answer?.evidences) ? answer.evidences : [];
+        const completeEvidences = evidences.filter((evidence) => [evidence?.source, evidence?.finding].every(hasValue));
+        if (completeEvidences.length < 3) missing.push("3 条完整需求证据（来源、发现）");
+        evidences.forEach((evidence, index) => {
+          if (hasValue(evidence) && ![evidence?.source, evidence?.finding].every(hasValue)) missing.push(`第 ${index + 1} 条需求证据`);
         });
       }
       return missing;
@@ -301,13 +324,16 @@
       knowledge.innerHTML = item.knowledge.map(([label, text]) => `<li class="flex items-start gap-2"><span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">check_circle</span><div><strong>${escapeHtml(label)}：</strong>${escapeHtml(text)}</div></li>`).join("");
       terms.innerHTML = item.terms.map(([term, explanation]) => `<div class="bg-surface p-2 rounded border border-border flex justify-between items-center"><span class="font-label-caps text-primary font-bold">${escapeHtml(term)}</span><span class="text-body-sm text-on-surface-variant">${escapeHtml(explanation)}</span></div>`).join("");
       const playbook = item.playbook || item.steps.map((step) => ({ title: step, body: "按这一步完成你的实践记录。" }));
+      const scopeNotice = item.scopeNotice ? `<div class="relative mt-2 rounded-lg border border-primary/15 bg-surface-container-low p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-primary text-[18px]">info</span><p class="m-0 text-[13px] leading-6 text-on-surface-variant"><strong class="text-primary">V1 教学范围：</strong>${escapeHtml(item.scopeNotice)}</p></div>` : "";
+      const ecommerceScopeNotice = selectedNode > 1 && state.answers[1]?.businessMode === "跨境电商" ? `<div class="mb-4 rounded-lg border border-secondary/25 bg-primary-fixed/35 p-4 text-[13px] leading-6 text-on-surface-variant"><strong class="text-primary">你在节点 1 选择了跨境电商。</strong>当前节点 2—8 使用的是 B2B 出口案例，帮助你练习选品、成本和基础贸易流程；店铺运营、广告、FBA / 平台履约不属于本版范围。</div>` : "";
       const decisionTool = item.decision ? `<div class="relative mt-2 rounded-lg border border-secondary/30 bg-primary-fixed/35 p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-secondary text-[18px]">alt_route</span><h4 class="font-body-sm font-bold text-primary mb-2">还不知道选哪个？用 3 个问题做判断</h4><p class="text-[13px] leading-5 text-on-surface-variant mb-4">这不是考试。选更接近你当前情况的答案，系统会给出第一步建议。</p>${item.decision.questions.map((question) => `<fieldset class="mb-3 border-0 p-0"><legend class="mb-2 text-[13px] font-bold text-primary">${escapeHtml(question.title)}</legend><div class="grid gap-2 md:grid-cols-2">${question.options.map(([value, label]) => `<label class="flex cursor-pointer items-start gap-2 rounded-md border border-border bg-surface px-3 py-2 text-[13px] leading-5 text-on-surface-variant hover:border-secondary"><input class="mt-1" type="radio" name="decision-${escapeHtml(question.key)}" value="${escapeHtml(value)}"><span>${escapeHtml(label)}</span></label>`).join("")}</div></fieldset>`).join("")}<button type="button" data-run-decision class="mt-1 rounded bg-secondary px-3 py-2 text-[13px] font-bold text-on-secondary hover:bg-secondary/90">查看我的建议</button><div data-decision-result class="hidden mt-3 rounded-md border border-secondary/25 bg-surface p-3" aria-live="polite"></div></div>` : "";
       steps.innerHTML = `<div class="absolute left-2.5 top-2 bottom-2 w-0.5 bg-border"></div>${playbook.map((step, index) => {
         const links = (step.links || []).map(([label, href]) => `<a class="inline-flex items-center gap-1 text-secondary hover:underline" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined text-[14px]">open_in_new</span>${escapeHtml(label)}</a>`).join("<span class=\"text-outline-variant\">·</span>");
         const searches = step.searches?.length ? `<div class="mt-3 flex flex-wrap items-center gap-2"><span class="text-[12px] font-bold text-primary">可以直接搜索：</span>${step.searches.map((term) => `<span class="rounded-full bg-surface px-2.5 py-1 text-[12px] text-on-surface-variant border border-border">${escapeHtml(term)}</span>`).join("")}</div>` : "";
         const template = step.template ? `<div class="mt-3 rounded-md border border-secondary/20 bg-surface p-3"><div class="flex items-center justify-between gap-2 mb-2"><span class="text-[12px] font-bold text-primary">可复制模板</span><button type="button" data-copy-template="${escapeHtml(step.template)}" class="rounded border border-border bg-surface px-2 py-1 text-[12px] text-secondary hover:bg-surface-container-low">复制</button></div><p class="m-0 whitespace-pre-line text-[13px] leading-6 text-on-surface-variant">${escapeHtml(step.template)}</p></div>` : "";
         return `<div class="relative"><div class="absolute -left-[27px] w-5 h-5 rounded-full bg-surface border-2 ${index === 0 ? "border-secondary" : "border-border"} flex items-center justify-center">${index === 0 ? '<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>' : ""}</div><div class="rounded-lg border border-border bg-surface-bright p-4"><h4 class="font-body-sm font-bold text-primary mb-2">${index + 1}. ${escapeHtml(step.title)}</h4><p class="text-body-sm leading-6 text-on-surface-variant mb-2">${escapeHtml(step.body)}</p>${step.action ? `<div class="rounded-md bg-primary-fixed/50 px-3 py-2 text-[13px] leading-5 text-on-primary-fixed-variant"><strong class="text-primary">现在做：</strong>${escapeHtml(step.action)}</div>` : ""}${searches}${links ? `<div class="mt-3 flex flex-wrap items-center gap-2 text-[13px]"><span class="font-bold text-primary">打开工具：</span>${links}</div>` : ""}${template}</div></div>`;
-      }).join("")}${decisionTool}${item.outcome ? `<div class="relative mt-2 rounded-lg border border-secondary/30 bg-secondary/5 p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-secondary text-[18px]">flag</span><p class="m-0 text-body-sm leading-6 text-primary"><strong>完成成果：</strong>${escapeHtml(item.outcome.replace(/^完成后你应该得到：/, ""))}</p></div>` : ""}`;
+      }).join("")}${scopeNotice}${decisionTool}${item.outcome ? `<div class="relative mt-2 rounded-lg border border-secondary/30 bg-secondary/5 p-4"><span class="material-symbols-outlined absolute -left-[28px] top-4 text-secondary text-[18px]">flag</span><p class="m-0 text-body-sm leading-6 text-primary"><strong>完成成果：</strong>${escapeHtml(item.outcome.replace(/^完成后你应该得到：/, ""))}</p></div>` : ""}`;
+      steps.insertAdjacentHTML("afterbegin", ecommerceScopeNotice);
       steps.querySelectorAll("[data-copy-template]").forEach((button) => {
         button.addEventListener("click", async () => {
           try {
@@ -331,9 +357,14 @@
         const explanation = mode === "B2B 出口"
           ? "你的选择更接近“先用供应商和企业客户验证一笔订单”。这条路不要求你立刻运营店铺或投广告。"
           : "你的选择更接近“直接面向消费者经营店铺”。你需要准备商品页、内容或广告，以及单件履约和售后。";
+        const ecommerceNote = mode === "跨境电商" ? "<br><span class=\"text-[12px] text-on-surface-variant\">提醒：当前完整实操案例按 B2B 出口设计；跨境电商的店铺、广告和平台履约会在独立路线补充。</span>" : "";
+        const buttons = mode === "跨境电商"
+          ? '<button type="button" data-apply-decision class="mt-3 rounded border border-secondary bg-surface px-3 py-2 text-[13px] font-bold text-secondary hover:bg-primary-fixed">记录我的倾向（跨境电商）</button><button type="button" data-apply-b2b class="mt-3 ml-2 rounded bg-secondary px-3 py-2 text-[13px] font-bold text-on-secondary hover:bg-secondary/90">按 B2B 实操案例继续学习</button>'
+          : '<button type="button" data-apply-decision class="mt-3 rounded border border-secondary bg-surface px-3 py-2 text-[13px] font-bold text-secondary hover:bg-primary-fixed">用这个建议填写实践记录</button>';
         result.classList.remove("hidden");
-        result.innerHTML = `<p class="m-0 text-[13px] leading-5 text-on-surface-variant"><strong class="text-primary">建议先从：${escapeHtml(mode)}</strong><br>${escapeHtml(explanation)}</p><button type="button" data-apply-decision class="mt-3 rounded border border-secondary bg-surface px-3 py-2 text-[13px] font-bold text-secondary hover:bg-primary-fixed">用这个建议填写实践记录</button>`;
+        result.innerHTML = `<p class="m-0 text-[13px] leading-5 text-on-surface-variant"><strong class="text-primary">建议先从：${escapeHtml(mode)}</strong><br>${escapeHtml(explanation)}${ecommerceNote}</p>${buttons}`;
         result.querySelector("[data-apply-decision]").addEventListener("click", () => openTaskDialog({ businessMode: mode }));
+        result.querySelector("[data-apply-b2b]")?.addEventListener("click", () => openTaskDialog({ businessMode: "B2B 出口" }));
       });
       task.textContent = item.task;
       taskButton.textContent = hasAnswerContent(answer) ? "编辑实践记录" : "填写实践记录";
@@ -375,8 +406,14 @@
     }
 
     function renderSupplierRows(container, suppliers) {
-      const rows = Array.isArray(suppliers) && suppliers.length ? suppliers : [{ name: "", moq: "", unitPrice: "", notes: "" }];
+      const rows = Array.isArray(suppliers) && suppliers.length ? suppliers : [{ name: "", moq: "", unitPrice: "", notes: "" }, { name: "", moq: "", unitPrice: "", notes: "" }];
       container.innerHTML = rows.map((supplier, index) => `<div data-supplier-row style="border:1px solid #d9e2ec;border-radius:10px;padding:12px;margin-bottom:10px;background:#f8fafc"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><strong style="font-size:14px;color:#102a43">供应商 ${index + 1}</strong><button type="button" data-remove-supplier="${index}" style="border:0;background:transparent;color:#829ab1;cursor:pointer;font-size:13px">${rows.length > 1 ? "删除" : "清空"}</button></div><div style="display:grid;grid-template-columns:1.3fr .8fr .8fr;gap:8px"><input data-supplier="name" value="${escapeHtml(supplier?.name || "")}" style="${inputStyle}" placeholder="供应商名称"><input data-supplier="moq" value="${escapeHtml(supplier?.moq || "")}" type="number" min="0" step="1" style="${inputStyle}" placeholder="MOQ"><input data-supplier="unitPrice" value="${escapeHtml(supplier?.unitPrice || "")}" type="number" min="0" step="0.01" style="${inputStyle}" placeholder="单价（USD）"></div><input data-supplier="notes" value="${escapeHtml(supplier?.notes || "")}" style="${inputStyle};margin-top:8px" placeholder="可选：交期、样品或定制备注"></div>`).join("");
+    }
+
+    function renderEvidenceRows(container, evidences) {
+      const rows = Array.isArray(evidences) && evidences.length ? evidences.slice(0, 3) : [{ source: "", finding: "" }, { source: "", finding: "" }, { source: "", finding: "" }];
+      while (rows.length < 3) rows.push({ source: "", finding: "" });
+      container.innerHTML = rows.map((evidence, index) => `<div data-evidence-row style="border:1px solid #d9e2ec;border-radius:10px;padding:12px;margin-bottom:10px;background:#f8fafc"><strong style="display:block;margin-bottom:10px;font-size:14px;color:#102a43">需求证据 ${index + 1}</strong><div style="display:grid;grid-template-columns:1fr 1.7fr;gap:8px"><input data-evidence="source" value="${escapeHtml(evidence?.source || "")}" style="${inputStyle}" placeholder="来源：Amazon 评论 / Trends"><input data-evidence="finding" value="${escapeHtml(evidence?.finding || "")}" style="${inputStyle}" placeholder="发现：多人反馈杯盖漏水"></div></div>`).join("");
     }
 
     function readForm(dialog, nodeId) {
@@ -394,6 +431,12 @@
           notes: String(row.querySelector('[data-supplier="notes"]')?.value || "").trim(),
         }));
       }
+      if (nodeId === 3) {
+        answer.evidences = Array.from(dialog.querySelectorAll("[data-evidence-row]")).map((row) => ({
+          source: String(row.querySelector('[data-evidence="source"]')?.value || "").trim(),
+          finding: String(row.querySelector('[data-evidence="finding"]')?.value || "").trim(),
+        }));
+      }
       return answer;
     }
 
@@ -403,11 +446,15 @@
       const dialog = document.createElement("dialog");
       dialog.style.cssText = "width:min(680px,calc(100% - 32px));max-height:calc(100vh - 40px);border:0;border-radius:16px;padding:0;box-shadow:0 24px 80px rgba(16,42,67,.25);color:#102a43";
       const fields = (formSchemas[selectedNode] || []).map((field) => renderField(field, answer[field.key])).join("");
-      const supplierBlock = selectedNode === 2 ? `<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><label style="${labelStyle};margin:0">候选供应商 <span style="color:#d64545">*</span></label><button type="button" data-add-supplier style="border:1px solid #9fb3c8;border-radius:7px;padding:6px 10px;background:#fff;color:#006a63;cursor:pointer;font-size:13px">＋ 添加供应商</button></div><p style="font-size:12px;color:#627d98;margin:0 0 10px">至少填写 1 家，最多添加 3 家；每家需要名称、MOQ 和单价。</p><div data-suppliers></div></div>` : "";
+      const supplierBlock = selectedNode === 2 ? `<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><label style="${labelStyle};margin:0">候选供应商 <span style="color:#d64545">*</span></label><button type="button" data-add-supplier style="border:1px solid #9fb3c8;border-radius:7px;padding:6px 10px;background:#fff;color:#006a63;cursor:pointer;font-size:13px">＋ 添加供应商</button></div><p style="font-size:12px;color:#627d98;margin:0 0 10px">至少完整填写 2 家，最多添加 3 家；每家需要名称、MOQ 和单价。</p><div data-suppliers></div></div>` : "";
+      const evidenceBlock = selectedNode === 3 ? `<div style="margin-bottom:16px"><label style="${labelStyle}">3 条需求证据 <span style="color:#d64545">*</span></label><p style="font-size:12px;color:#627d98;margin:0 0 10px">每条都写清楚“从哪里看到”以及“看到了什么”，再在下方得出你的结论。</p><div data-evidences></div></div>` : "";
       const nodeTwoFields = selectedNode === 2
         ? `${renderField(formSchemas[2][0], answer.category)}${renderField(formSchemas[2][1], answer.candidateProducts)}${supplierBlock}${renderField(formSchemas[2][2], answer.notes)}`
         : fields;
-      dialog.innerHTML = `<form method="dialog" data-roadmap-form style="padding:24px;max-height:calc(100vh - 40px);overflow:auto;font-family:'Noto Sans SC',sans-serif"><div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:8px"><div><h2 style="font-size:22px;font-weight:700;margin:0 0 8px">节点 ${selectedNode} 实践记录</h2><p style="margin:0 0 18px;color:#627d98;font-size:14px;line-height:1.6">${escapeHtml(item.task)}</p></div><button type="button" data-cancel aria-label="关闭" style="border:0;background:transparent;color:#627d98;font-size:25px;line-height:1;cursor:pointer">×</button></div>${nodeTwoFields}<div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid #e5e7eb"><button value="cancel" type="button" data-cancel-secondary style="padding:10px 18px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#243b53;cursor:pointer">取消</button><button value="confirm" type="submit" style="padding:10px 18px;border:0;border-radius:8px;background:#006a63;color:#fff;font-weight:600;cursor:pointer">保存记录</button></div></form>`;
+      const nodeThreeFields = selectedNode === 3
+        ? `${renderField(formSchemas[3][0], answer.targetMarket)}${renderField(formSchemas[3][1], answer.customerProfile)}${evidenceBlock}${renderField(formSchemas[3][2], answer.marketConclusion)}${renderField(formSchemas[3][3], answer.notes)}`
+        : nodeTwoFields;
+      dialog.innerHTML = `<form method="dialog" data-roadmap-form style="padding:24px;max-height:calc(100vh - 40px);overflow:auto;font-family:'Noto Sans SC',sans-serif"><div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:8px"><div><h2 style="font-size:22px;font-weight:700;margin:0 0 8px">节点 ${selectedNode} 实践记录</h2><p style="margin:0 0 18px;color:#627d98;font-size:14px;line-height:1.6">${escapeHtml(item.task)}</p></div><button type="button" data-cancel aria-label="关闭" style="border:0;background:transparent;color:#627d98;font-size:25px;line-height:1;cursor:pointer">×</button></div>${nodeThreeFields}<div style="display:flex;justify-content:flex-end;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid #e5e7eb"><button value="cancel" type="button" data-cancel-secondary style="padding:10px 18px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#243b53;cursor:pointer">取消</button><button value="confirm" type="submit" style="padding:10px 18px;border:0;border-radius:8px;background:#006a63;color:#fff;font-weight:600;cursor:pointer">保存记录</button></div></form>`;
       document.body.appendChild(dialog);
       if (selectedNode === 2) {
         const suppliers = dialog.querySelector("[data-suppliers]");
@@ -436,6 +483,7 @@
         }
         bindSupplierRemove();
       }
+      if (selectedNode === 3) renderEvidenceRows(dialog.querySelector("[data-evidences]"), answer.evidences);
       dialog.querySelectorAll("[data-cancel], [data-cancel-secondary]").forEach((button) => button.addEventListener("click", () => dialog.close("cancel")));
       dialog.addEventListener("close", () => dialog.remove());
       dialog.querySelector("form").addEventListener("submit", async (event) => {
