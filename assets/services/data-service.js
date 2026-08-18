@@ -197,6 +197,24 @@
     if (insertedIds.length) deleteQuery = deleteQuery.not("id", "in", `(${insertedIds.join(",")})`);
     const { error: deleteError } = await deleteQuery;
     if (deleteError) throw deleteError;
+
+    // The first version of the schema does not have a dedicated plan-details
+    // column.  Keep the structured plan additions in the existing project task
+    // record so they can follow the same signed-in user across devices.
+    const planDetails = next.planDetails && typeof next.planDetails === "object" ? next.planDetails : {};
+    const hasPlanDetails = Object.values(planDetails).some((value) => {
+      if (value && typeof value === "object") return Object.values(value).some((item) => String(item || "").trim());
+      return String(value || "").trim();
+    });
+    const { error: detailsError } = await clientOrThrow()
+      .from("challenge_tasks")
+      .upsert({
+        project_id: project.id,
+        day_number: 7,
+        content_json: { type: "export_plan_details", ...planDetails },
+        status: hasPlanDetails ? "in_progress" : "not_started",
+      }, { onConflict: "project_id,day_number" });
+    if (detailsError) throw detailsError;
     markOwned(user.id, ["planDraft"]);
     return { cloud: true, draft: next };
   }
@@ -258,10 +276,24 @@
       .eq("project_id", project.id)
       .order("created_at");
     if (competitorsError) throw competitorsError;
+    const { data: planTask, error: planTaskError } = await clientOrThrow()
+      .from("challenge_tasks")
+      .select("content_json")
+      .eq("project_id", project.id)
+      .eq("day_number", 7)
+      .maybeSingle();
+    if (planTaskError) throw planTaskError;
+    const planDetails = planTask?.content_json?.type === "export_plan_details"
+      ? {
+          logistics: planTask.content_json.logistics || {},
+          actionPlan: planTask.content_json.actionPlan || {},
+        }
+      : {};
     return {
       clientId: project.client_id,
       savedAt: project.updated_at,
       projectContext: { productName: project.product_name || "", targetMarket: project.market || "" },
+      planDetails,
       competitors: (competitors || []).map((competitor) => ({
         name: competitor.name,
         platform: competitor.platform,
