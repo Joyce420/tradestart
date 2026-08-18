@@ -204,7 +204,7 @@
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-primary tracking-tight">商品与模式</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">未开始</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="plan-step-1-status">待补充</span>
 </span>
 </a>
 </li>
@@ -219,7 +219,7 @@
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-primary tracking-tight">目标市场与客户</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">未开始</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="plan-step-2-status">待补充</span>
 </span>
 </a>
 </li>
@@ -234,7 +234,7 @@
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-bold text-secondary tracking-tight">竞品与差异化</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">当前步骤</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="plan-step-3-status">待完成</span>
 </span>
 </a>
 </li>
@@ -248,6 +248,7 @@
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-outline tracking-tight">成本与报价</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="plan-step-4-status">待补充</span>
 </span>
 </a>
 </li>
@@ -261,6 +262,7 @@
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-outline tracking-tight">渠道物流与收款</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="plan-step-5-status">待补充</span>
 </span>
 </a>
 </li>
@@ -273,6 +275,7 @@
 </span>
 <span class="ml-4 min-w-0 flex flex-col">
 <span class="font-body-md text-body-md font-medium text-outline tracking-tight">未来 14 天行动计划</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="plan-step-6-status">待补充</span>
 </span>
 </a>
 </li>
@@ -287,6 +290,20 @@
 <div class="text-right"><div class="font-bold text-secondary" id="imported-unit-profit">--</div><div class="text-body-sm text-on-surface-variant" id="imported-margin">--</div></div>
 </div>
 </div>
+<section class="hidden bg-primary-fixed/35 border border-primary-fixed-dim rounded-xl p-5" id="roadmap-project-context">
+<div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+<div>
+<div class="flex items-center gap-2 font-headline-sm text-primary"><span class="material-symbols-outlined text-secondary">assignment_turned_in</span>已从路线图汇总项目资料</div>
+<p class="mt-1 text-body-sm text-on-surface-variant">这是你此前填写的真实练习记录；仍可返回路线图修改。</p>
+</div>
+<a class="shrink-0 text-body-sm font-bold text-secondary hover:underline" href="roadmap.html">返回路线图编辑</a>
+</div>
+<div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+<div class="rounded-lg border border-border bg-surface p-3"><div class="font-label-caps text-label-caps text-on-surface-variant">产品与供应商</div><p class="mt-1 font-bold text-primary" id="context-product">--</p><p class="mt-1 text-body-sm text-on-surface-variant" id="context-supplier">--</p></div>
+<div class="rounded-lg border border-border bg-surface p-3"><div class="font-label-caps text-label-caps text-on-surface-variant">市场与客户</div><p class="mt-1 font-bold text-primary" id="context-market">--</p><p class="mt-1 text-body-sm text-on-surface-variant" id="context-customer">--</p></div>
+<div class="rounded-lg border border-border bg-surface p-3"><div class="font-label-caps text-label-caps text-on-surface-variant">报价与物流</div><p class="mt-1 font-bold text-primary" id="context-pricing">--</p><p class="mt-1 text-body-sm text-on-surface-variant" id="context-logistics">--</p></div>
+</div>
+</section>
 <!-- Inner Layout: Form + Context Sidebar -->
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 <!-- Form Area -->
@@ -539,15 +556,23 @@
 <span class="material-symbols-outlined text-secondary">inventory_2</span> 1. 产品与定位
                     </h3>
 <div class="grid grid-cols-2 gap-4 font-body-sm text-body-sm">
-<div><span class="text-on-surface-variant">产品名称:</span> 智能温度显示保温杯</div>
-<div><span class="text-on-surface-variant">目标人群:</span> 20-35岁都市白领、户外爱好者</div>
+<div><span class="text-on-surface-variant">产品名称:</span> <span id="preview-product-name">尚未填写</span></div>
+<div><span class="text-on-surface-variant">目标人群:</span> <span id="preview-customer-profile">尚未填写</span></div>
+<div><span class="text-on-surface-variant">供应商:</span> <span id="preview-supplier">尚未填写</span></div>
+<div><span class="text-on-surface-variant">业务模式:</span> <span id="preview-business-mode">尚未填写</span></div>
 </div>
 </section>
 <section class="bg-surface p-6 rounded-lg border border-border shadow-sm">
 <h3 class="font-headline-sm text-headline-sm text-primary mb-4 flex items-center gap-2 border-b border-border pb-2">
 <span class="material-symbols-outlined text-secondary">public</span> 2. 目标市场
                     </h3>
-<p class="font-body-sm text-body-sm text-primary">首选北美市场（美国），次选欧洲（德国、英国）。北美市场对户外水杯需求大，且对创新功能接受度高。</p>
+<p class="font-body-sm text-body-sm text-primary" id="preview-market-summary">尚未填写目标市场与需求结论。</p>
+</section>
+<section class="hidden bg-surface p-6 rounded-lg border border-border shadow-sm" id="preview-calculation-section">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4 flex items-center gap-2 border-b border-border pb-2">
+<span class="material-symbols-outlined text-secondary">payments</span> 成本与报价测算（已带入）
+</h3>
+<p class="font-body-sm text-body-sm text-primary" id="preview-calculation-summary">--</p>
 </section>
 <section class="bg-surface p-6 rounded-lg border border-secondary/50 shadow-sm relative">
 <div class="absolute -top-3 left-4 bg-secondary text-on-secondary px-2 py-0.5 rounded text-xs font-bold">正在编辑</div>
@@ -595,8 +620,9 @@
 <script src="assets/config.js"></script>
 <script src="assets/services/supabase-client.js"></script>
 <script src="assets/services/auth-service.js"></script>
-<script src="assets/services/data-service.js?v=20260808-1"></script>
+<script src="assets/services/data-service.js?v=20260818-1"></script>
 <script src="assets/common.js"></script>
+<script src="assets/project-context.js?v=20260818-1"></script>
 <script src="assets/auth-ui.js?v=20260808-1"></script>
-<script src="assets/plan.js?v=20260808-1"></script>
+<script src="assets/plan.js?v=20260818-1"></script>
 </body></html>

@@ -25,7 +25,18 @@
     const resetButton = document.getElementById("reset-calculator");
     const saveButton = document.getElementById("save-calculation");
     const useInPlan = document.getElementById("use-in-plan");
+    const roadmapImportCard = document.getElementById("roadmap-import-card");
+    const roadmapImportSummary = document.getElementById("roadmap-import-summary");
+    const importRoadmapData = document.getElementById("import-roadmap-data");
     let currency = TradeStart.get("calculatorCurrency", "USD");
+
+    function getRoadmapContext() {
+      return window.TradeStartProject?.roadmapContext?.() || {};
+    }
+
+    function hasRoadmapData(context) {
+      return Boolean(window.TradeStartProject?.hasSourcingData?.(context));
+    }
 
     function readValues() {
       return Object.fromEntries(ids.map((id) => [id, Math.max(0, Number(inputs[id].value) || 0)]));
@@ -105,6 +116,33 @@
       calculate();
     }
 
+    function renderRoadmapImport() {
+      const context = getRoadmapContext();
+      if (!roadmapImportCard || !hasRoadmapData(context)) return;
+      const product = context.productName || "你的商品";
+      const supplier = context.supplierName ? `，供应商：${context.supplierName}` : "";
+      const moq = context.supplierMoq !== null ? `，MOQ：${context.supplierMoq} 件` : "";
+      const price = context.supplierUnitPrice !== null ? `，单价：$${context.supplierUnitPrice.toFixed(2)}` : "";
+      roadmapImportSummary.textContent = `${product}${supplier}${moq}${price}。带入后仍可自行修改所有成本。`;
+      roadmapImportCard.classList.remove("hidden");
+    }
+
+    function applyRoadmapData(showToast = true) {
+      const context = getRoadmapContext();
+      if (!hasRoadmapData(context)) {
+        TradeStart.toast("请先在路线图节点 2 填写商品与供应商记录", "warning");
+        return false;
+      }
+      const values = readValues();
+      if (context.supplierUnitPrice !== null) values.purchasePrice = context.supplierUnitPrice;
+      if (context.supplierMoq !== null) values.volume = context.supplierMoq;
+      setCurrency("USD");
+      setValues(values);
+      TradeStart.set("calculatorRoadmapContext", context);
+      if (showToast) TradeStart.toast("已带入路线图中的采购价与 MOQ，请继续补全售价和物流成本");
+      return true;
+    }
+
     Object.values(inputs).forEach((input) => input.addEventListener("input", calculate));
     currencyButtons.forEach((button) => button.addEventListener("click", () => setCurrency(button.dataset.currency)));
     loadExample.addEventListener("click", () => {
@@ -122,7 +160,7 @@
     });
     saveButton.addEventListener("click", async () => {
       const existing = TradeStart.get("savedCalculation", null);
-      const calculation = { ...calculate(), clientId: existing?.clientId };
+      const calculation = { ...calculate(), clientId: existing?.clientId, projectContext: getRoadmapContext() };
       TradeStart.set("savedCalculation", calculation);
       try {
         const result = await TradeStartData.saveCalculation(calculation);
@@ -134,12 +172,18 @@
       }
     });
     useInPlan.addEventListener("click", () => {
-      TradeStart.set("planCalculation", calculate());
+      TradeStart.set("planCalculation", { ...calculate(), projectContext: getRoadmapContext(), transferredAt: new Date().toISOString() });
       window.location.href = "plan.html";
     });
+    importRoadmapData?.addEventListener("click", () => applyRoadmapData());
 
     const saved = TradeStart.get("savedCalculation", null);
     if (saved) setValues(saved);
     setCurrency(currency);
+    renderRoadmapImport();
+    if (new URLSearchParams(window.location.search).get("from") === "roadmap" && applyRoadmapData(false)) {
+      window.history.replaceState({}, "", "calculator.html");
+      TradeStart.toast("已从路线图带入采购价与 MOQ，请继续补全售价和物流成本");
+    }
   });
 })();

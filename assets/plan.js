@@ -22,6 +22,7 @@
       competitors: Array.isArray(savedCompetitors) ? savedCompetitors : [],
       savedAt: isLegacyDemo ? null : savedDraft?.savedAt || null,
       clientId: savedDraft?.clientId || null,
+      projectContext: savedDraft?.projectContext || {},
       dirty: false,
     };
     const tableBody = document.getElementById("competitor-table-body");
@@ -31,6 +32,105 @@
 
     function escapeHtml(value) {
       return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    }
+
+    function hasValue(value) {
+      if (Array.isArray(value)) return value.some(hasValue);
+      if (value && typeof value === "object") return Object.values(value).some(hasValue);
+      return String(value ?? "").trim() !== "" && value !== null;
+    }
+
+    function getRoadmapContext() {
+      return window.TradeStartProject?.roadmapContext?.() || {};
+    }
+
+    function currentProjectContext() {
+      const live = getRoadmapContext();
+      const merged = { ...state.projectContext };
+      Object.entries(live).forEach(([key, value]) => {
+        if (hasValue(value)) merged[key] = value;
+      });
+      return merged;
+    }
+
+    function currentCalculation() {
+      return TradeStart.get("planCalculation", null) || TradeStart.get("savedCalculation", null);
+    }
+
+    function money(value, currency = "USD") {
+      const symbol = currency === "CNY" ? "¥" : "$";
+      return `${symbol}${Number(value || 0).toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function isNumber(value) {
+      return value !== null && value !== "" && value !== undefined && Number.isFinite(Number(value));
+    }
+
+    function setText(id, value, fallback = "尚未填写") {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value || fallback;
+    }
+
+    function setStepStatus(id, completed, pendingLabel = "待补充") {
+      const element = document.getElementById(id);
+      if (!element) return;
+      element.textContent = completed ? "已带入" : pendingLabel;
+      element.classList.toggle("text-secondary", completed);
+      element.classList.toggle("font-medium", completed);
+    }
+
+    function renderProjectContext(context, calculation, competitorComplete) {
+      const hasContext = hasValue(context);
+      const contextCard = document.getElementById("roadmap-project-context");
+      contextCard?.classList.toggle("hidden", !hasContext);
+
+      const supplier = context.supplierName
+        ? `${context.supplierName}${isNumber(context.supplierMoq) ? ` · MOQ ${context.supplierMoq} 件` : ""}${isNumber(context.supplierUnitPrice) ? ` · ${money(context.supplierUnitPrice)}/件` : ""}`
+        : "尚未填写供应商";
+      const pricing = isNumber(context.minimumQuote)
+        ? `最低报价 ${money(context.minimumQuote)}/件${isNumber(context.targetMargin) ? ` · 目标利润 ${context.targetMargin}%` : ""}`
+        : isNumber(context.targetMargin) ? `目标利润 ${context.targetMargin}%` : "尚未填写报价目标";
+      const logistics = [context.transportMethod, context.incoterm].filter(Boolean).join(" · ") || "尚未填写运输与贸易术语";
+
+      setText("context-product", context.productName, "尚未填写产品");
+      setText("context-supplier", supplier, "尚未填写供应商");
+      setText("context-market", context.targetMarket, "尚未填写目标市场");
+      setText("context-customer", context.customerProfile, "尚未填写客户画像");
+      setText("context-pricing", pricing, "尚未填写报价目标");
+      setText("context-logistics", logistics, "尚未填写物流安排");
+
+      setText("preview-product-name", context.productName);
+      setText("preview-customer-profile", context.customerProfile);
+      setText("preview-supplier", supplier);
+      setText("preview-business-mode", context.businessMode);
+      const marketSummary = [context.targetMarket, context.customerProfile, context.marketConclusion || context.usp]
+        .filter(Boolean).join("；");
+      setText("preview-market-summary", marketSummary, "尚未填写目标市场与需求结论。");
+
+      const calculationSection = document.getElementById("preview-calculation-section");
+      calculationSection?.classList.toggle("hidden", !calculation);
+      if (calculation) {
+        setText("preview-calculation-summary", `销售单价 ${money(calculation.sellingPrice, calculation.currency)}；单件净利润 ${money(calculation.unitProfit, calculation.currency)}；利润率 ${Number(calculation.margin || 0).toFixed(1)}%；预计总净利 ${money(calculation.totalProfit, calculation.currency)}`, "--");
+      }
+
+      const steps = [
+        Boolean(context.productName && context.supplierName),
+        Boolean(context.targetMarket && context.customerProfile),
+        competitorComplete,
+        Boolean(calculation),
+        Boolean(context.transportMethod && context.incoterm),
+        Boolean(context.nextImprovement),
+      ];
+      const completedSteps = steps.filter(Boolean).length;
+      document.getElementById("plan-progress-text").textContent = `${Math.round((completedSteps / 6) * 100)}%`;
+      document.getElementById("plan-progress-bar").style.width = `${(completedSteps / 6) * 100}%`;
+      document.getElementById("plan-progress-note").textContent = `已汇总 ${completedSteps}/6 项方案要素`;
+      setStepStatus("plan-step-1-status", steps[0]);
+      setStepStatus("plan-step-2-status", steps[1]);
+      setStepStatus("plan-step-3-status", steps[2], "待完成");
+      setStepStatus("plan-step-4-status", steps[3]);
+      setStepStatus("plan-step-5-status", steps[4]);
+      setStepStatus("plan-step-6-status", steps[5]);
     }
 
     function markDirty() {
@@ -60,11 +160,9 @@
       document.getElementById("criterion-competitor-label").classList.toggle("line-through", hasCompetitor);
       document.getElementById("criterion-difference-label").classList.toggle("line-through", hasDifference);
       const completed = hasCompetitor && hasDifference;
-      document.getElementById("plan-progress-text").textContent = completed ? "17%" : "0%";
-      document.getElementById("plan-progress-bar").style.width = completed ? "16.7%" : "0%";
-      document.getElementById("plan-progress-note").textContent = completed ? "已完成 1/6 个步骤" : "尚未完成任何步骤";
       document.getElementById("preview-competitors").textContent = `已分析竞品: ${state.competitors.map((item) => item.name).join(", ") || "暂未添加"}`;
       document.getElementById("preview-difference").textContent = `核心差异化: ${state.competitors[0]?.difference || "暂未填写"}`;
+      renderProjectContext(currentProjectContext(), currentCalculation(), completed);
 
       tableBody.querySelectorAll("[data-delete]").forEach((button) => {
         button.addEventListener("click", () => {
@@ -79,7 +177,8 @@
     async function saveDraft(showToast = true) {
       state.savedAt = new Date().toISOString();
       state.dirty = false;
-      const draft = { competitors: state.competitors, savedAt: state.savedAt, clientId: state.clientId };
+      state.projectContext = currentProjectContext();
+      const draft = { competitors: state.competitors, savedAt: state.savedAt, clientId: state.clientId, projectContext: state.projectContext };
       TradeStart.set("planDraft", draft);
       savedStatus.textContent = "草稿已保存";
       savedStatus.parentElement.classList.add("text-success");
@@ -132,7 +231,7 @@
     });
     document.getElementById("export-plan").addEventListener("click", () => TradeStart.toast("完成全部方案步骤后才能导出 PDF", "warning"));
 
-    const importedCalculation = TradeStart.get("planCalculation", null);
+    const importedCalculation = currentCalculation();
     if (importedCalculation) {
       const symbol = importedCalculation.currency === "CNY" ? "¥" : "$";
       document.getElementById("imported-calculation").classList.remove("hidden");

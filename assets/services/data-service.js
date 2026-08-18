@@ -156,15 +156,18 @@
     if (!user) return { cloud: false, draft };
 
     const next = { ...draft, clientId: draft.clientId || crypto.randomUUID() };
+    const context = next.projectContext && typeof next.projectContext === "object" ? next.projectContext : {};
+    const productName = String(context.productName || "").trim().slice(0, 160);
+    const market = String(context.targetMarket || "").trim().slice(0, 160);
     setLocal("planDraft", next);
     const { data: project, error: projectError } = await clientOrThrow()
       .from("challenge_projects")
       .upsert({
         user_id: user.id,
         client_id: next.clientId,
-        title: "我的出口方案",
-        product_name: "",
-        market: "",
+        title: productName ? `出口方案 · ${productName}` : "我的出口方案",
+        product_name: productName,
+        market,
         status: "draft",
       }, { onConflict: "user_id,client_id" })
       .select("id")
@@ -242,7 +245,7 @@
   async function loadPlan(userId) {
     const { data: project, error: projectError } = await clientOrThrow()
       .from("challenge_projects")
-      .select("id,client_id,updated_at")
+      .select("id,client_id,updated_at,product_name,market")
       .eq("user_id", userId)
       .order("updated_at", { ascending: false })
       .limit(1)
@@ -258,6 +261,7 @@
     return {
       clientId: project.client_id,
       savedAt: project.updated_at,
+      projectContext: { productName: project.product_name || "", targetMarket: project.market || "" },
       competitors: (competitors || []).map((competitor) => ({
         name: competitor.name,
         platform: competitor.platform,
