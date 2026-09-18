@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://joyce420.github.io/tradestart/sitemap.xml
